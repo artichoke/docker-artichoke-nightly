@@ -1,0 +1,42 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [master, test]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        image: [ubuntu, debian-slim]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get current date
+        id: timestamp
+        run: echo "::set-output name=datetime::$(date -u +'%Y%m%d%H%M%S')"
+
+      - name: Build the Docker image
+        run: >-
+          docker build .
+          --build-arg ARTICHOKE_NIGHTLY_VER=${{ steps.timestamp.outputs.datetime }}
+          --file Dockerfile.${{ matrix.image }}
+          --tag artichokerb/artichoke:${{ matrix.image }}-nightly-github-${{ github.run_id }}-${{ github.run_number }}
+          --tag artichokerb/artichoke:${{ matrix.image }}-nightly-${{ steps.timestamp.outputs.datetime }}
+          --tag artichokerb/artichoke:${{ matrix.image }}-nightly
+
+      - name: Tag canonical image as latest
+        if: matrix.image == 'ubuntu'
+        run: >-
+          docker tag artichokerb/artichoke:${{ matrix.image }}-nightly artichokerb/artichoke:latest
+
+      - name: Push the Docker image
+        env:
+          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_TOKEN"
+          docker push artichokerb/artichoke
