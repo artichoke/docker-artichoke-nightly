@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        image: [ubuntu, debian-slim]
+        image: [ubuntu, debian-slim, alpine]
 
     steps:
       - uses: actions/checkout@v2
