@@ -50,8 +50,10 @@ RUN set -eux; \
     gem --version; \
     bundle --version;
 
-# XXX HACK - the following build arg is used primarily to break caching and force rebuild, since
-# we're bulding nightlies here and fetching something like HEAD commit SHA will complicate things
+# XXX HACK - The `ARTICHOKE_NIGHTLY_VER` build arg is unused, but can be set at
+# build time to break layer caching and force a rebuild of Artichoke from latest
+# master. The GitHub Actions workflow sets this to the latest master commit SHA
+# in the upstream Artichoke repository.
 ARG ARTICHOKE_NIGHTLY_VER=latest
 # Install artichoke
 RUN set -eux; \

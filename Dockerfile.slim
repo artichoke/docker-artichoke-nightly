@@ -1,4 +1,4 @@
-FROM debian:10-slim AS build
+FROM debian:buster-slim AS build
 
 RUN apt-get update \
     && apt-get install -y libssl-dev \
@@ -50,8 +50,10 @@ RUN set -eux; \
     gem --version; \
     bundle --version;
 
-# XXX HACK - the following build arg is used primarily to break caching and force rebuild, since
-# we're bulding nightlies here and fetching something like HEAD commit SHA will complicate things
+# XXX HACK - The `ARTICHOKE_NIGHTLY_VER` build arg is unused, but can be set at
+# build time to break layer caching and force a rebuild of Artichoke from latest
+# master. The GitHub Actions workflow sets this to the latest master commit SHA
+# in the upstream Artichoke repository.
 ARG ARTICHOKE_NIGHTLY_VER=latest
 # Install artichoke
 RUN set -eux; \
@@ -60,7 +62,7 @@ RUN set -eux; \
     artichoke --version;
 
 # Setup runtime
-FROM debian:10-slim AS runtime
+FROM debian:buster-slim AS runtime
 
 COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
