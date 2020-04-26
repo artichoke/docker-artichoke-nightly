@@ -20,6 +20,11 @@
     "description": "Area: Dockerfile builds."
   },
   {
+    "name": "A-performance",
+    "color": "f7e101",
+    "description": "Area: Container size, bloat, build speed, etc."
+  },
+  {
     "name": "A-project",
     "color": "f7e101",
     "description": "Area: Infrastructure for running an open source project."
@@ -27,7 +32,12 @@
   {
     "name": "A-release",
     "color": "f7e101",
-    "description": "Area: crates.io releases and version bumps."
+    "description": "Area: Docker Hub releases and version bumps."
+  },
+  {
+    "name": "A-security",
+    "color": "f7e101",
+    "description": "Area: security vulnerabilities in base images and dependent packages."
   },
   {
     "name": "C-bug",
@@ -88,6 +98,11 @@
     "name": "IMG-debian-slim",
     "color": "3285a8",
     "description": "Base image: Debian slim."
+  },
+  {
+    "name": "IMG-ubuntu",
+    "color": "3285a8",
+    "description": "Base image: Ubuntu."
   },
   {
     "name": "S-blocked",
