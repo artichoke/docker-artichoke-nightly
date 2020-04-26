@@ -23,7 +23,7 @@ jobs:
       - name: Get Artichoke HEAD commit
         id: master_commit
         run: |
-          MASTER_COMMIT_SHA="$(curl https://api.github.com/repos/artichoke/artichoke/commits/master | jq '.sha')"
+          MASTER_COMMIT_SHA="$(curl https://api.github.com/repos/artichoke/artichoke/commits/master | jq --raw-output '.sha')"
           echo "::set-output name=sha::$MASTER_COMMIT_SHA"
 
       - name: Build the Docker image
