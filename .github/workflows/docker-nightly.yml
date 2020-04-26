@@ -1,8 +1,13 @@
 name: Docker Image CI
-
 on:
   push:
-    branches: [master, test]
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: "0 0 * * *" # build nightly!
 
 jobs:
   build:
@@ -10,33 +15,47 @@ jobs:
 
     strategy:
       matrix:
-        image: [ubuntu, debian-slim, alpine]
+        image: [ubuntu, slim, alpine]
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Get current date
-        id: timestamp
-        run: echo "::set-output name=datetime::$(date -u +'%Y%m%d%H%M%S')"
+      - name: Get Artichoke HEAD commit
+        id: master_commit
+        run: |
+          MASTER_COMMIT_SHA="$(curl https://api.github.com/repos/artichoke/artichoke/commits/master | jq --raw-output '.sha')"
+          echo "::set-output name=sha::$MASTER_COMMIT_SHA"
 
       - name: Build the Docker image
         run: >-
           docker build .
-          --build-arg ARTICHOKE_NIGHTLY_VER=${{ steps.timestamp.outputs.datetime }}
+          --build-arg ARTICHOKE_NIGHTLY_VER=${{ steps.master_commit.outputs.sha }}
           --file Dockerfile.${{ matrix.image }}
-          --tag artichokerb/artichoke:${{ matrix.image }}-nightly-github-${{ github.run_id }}-${{ github.run_number }}
-          --tag artichokerb/artichoke:${{ matrix.image }}-nightly-${{ steps.timestamp.outputs.datetime }}
-          --tag artichokerb/artichoke:${{ matrix.image }}-nightly
+          --tag artichokeruby/artichoke:${{ matrix.image }}-nightly
+          --tag artichokeruby/artichoke:${{ matrix.image }}-nightly-${{ steps.master_commit.outputs.sha }}
 
-      - name: Tag canonical image as latest
+      - name: Extra Canonical image tags
         if: matrix.image == 'ubuntu'
-        run: >-
-          docker tag artichokerb/artichoke:${{ matrix.image }}-nightly artichokerb/artichoke:latest
+        run: |
+          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:latest
+          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:${{ steps.master_commit.outputs.sha }}
+          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:${{ matrix.image }}18.04-nightly
+
+      - name: Extra Debian image tags
+        if: matrix.image == 'slim'
+        run: |
+          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokerb/artichoke:${{ matrix.image }}-buster-nightly
+
+      - name: Extra Alpine image tags
+        if: matrix.image == 'alpine'
+        run: |
+          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokerb/artichoke:${{ matrix.image }}3-nightly
 
       - name: Push the Docker image
+        if: github.ref == 'refs/heads/master'
         env:
           DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_TOKEN"
-          docker push artichokerb/artichoke
+          docker push artichokeruby/artichoke

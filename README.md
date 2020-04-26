@@ -9,8 +9,8 @@ Docker images for nightly builds of
 
 Pull and run the latest image:
 
-```
-$ docker run -it docker.io/artichokerb/artichoke airb
+```console
+$ docker run -it docker.io/artichokeruby/artichoke airb
 ```
 
 ## Quickstart
@@ -22,15 +22,17 @@ For the workflow to work 2 secrets need to be setup in repository settings:
 
 # Workflows
 
-## Docker-nightly
+## docker-nightly
 
 ### Platforms
 
 Currently supported docker platforms are:
 
-- `ubuntu` - canonical mainline image, tagged with `-ubuntu` and `latest`
-- `debian-slim` - Debian 10 (Buster) slim image
-- `alpine` - Alpine 3 image
+- `ubuntu` - canonical mainline image, tagged with `latest`, `ubuntu-nightly`,
+  and `ubuntu18.04-nightly`.
+- `debian-slim` - Debian 10 (Buster) slim image, tagged `slim-nightly` and
+  `slim-buster-nightly`.
+- `alpine` - Alpine 3 image, tagged with `alpine-nightly` and `alpine3-nightly`.
 
 ### Secrets
 
@@ -47,4 +49,5 @@ Currently supported docker platforms are:
 - `RUBY_INSTALL_SHA` - SHA256 of the `ruby-install` package (e.g.
   `openssl dgst -sha256 PACKAGE`)
 - `ARTICHOKE_NIGHTLY_VER` - Argument used for cache invalidation (see
-  `Dockerfile`), defaults to `date -u +'%Y%m%d%H%M%S'`.
+  `Dockerfile`), defaults to SHA of latest master commit in upstream Artichoke
+  repository.
