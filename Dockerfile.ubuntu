@@ -64,6 +64,15 @@ RUN set -eux; \
 # Setup runtime
 FROM ubuntu:18.04 AS runtime
 
+LABEL org.opencontainers.image.authors="Artem Yakimenko <http://temikus.net>, Ryan Lopopolo <rjl@hyperbo.la>"
+LABEL org.opencontainers.image.url="https://github.com/artichoke/docker-artichoke-nightly"
+LABEL org.opencontainers.image.source="https://github.com/artichoke/docker-artichoke-nightly"
+LABEL org.opencontainers.image.vendor="Artichoke Ruby <https://www.artichokeruby.org>"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.ref.name="nightly"
+LABEL org.opencontainers.image.title="Artichoke Ruby"
+LABEL org.opencontainers.image.description="Distribution of artichoke CLI and airb REPL from Artichoke Ruby"
+
 COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
 
