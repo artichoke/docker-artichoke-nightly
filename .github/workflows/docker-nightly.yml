@@ -33,6 +33,9 @@ jobs:
           --file Dockerfile.${{ matrix.image }}
           --tag artichokeruby/artichoke:${{ matrix.image }}-nightly
           --tag artichokeruby/artichoke:${{ matrix.image }}-nightly-${{ steps.master_commit.outputs.sha }}
+          --label "org.opencontainers.image.created=$(date --rfc-3339=seconds)"
+          --label "org.opencontainers.image.version=${{ steps.master_commit.outputs.sha }}"
+          --label "org.opencontainers.image.revision=${{ steps.master_commit.outputs.sha }}"
 
       - name: Extra Canonical image tags
         if: matrix.image == 'ubuntu'
