@@ -21,28 +21,33 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Get Artichoke HEAD commit
-        id: trunk
-        run: |
-          COMMIT_SHA="$(curl https://api.github.com/repos/artichoke/artichoke/commits/master | jq --raw-output '.sha')"
-          echo "::set-output name=sha::$COMMIT_SHA"
+      - name: Clone Artichoke
+        uses: actions/checkout@v2
+        with:
+          repository: artichoke/artichoke
+          path: artichoke
+
+      - name: Set Artichoke latest commit
+        id: latest
+        working-directory: artichoke
+        run: echo "::set-output name=commit::$(git rev-parse HEAD)"
 
       - name: Build the Docker image
         run: >-
           docker build .
-          --build-arg ARTICHOKE_NIGHTLY_VER=${{ steps.trunk.outputs.sha }}
+          --build-arg ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
           --file Dockerfile.${{ matrix.image }}
           --tag artichokeruby/artichoke:${{ matrix.image }}-nightly
-          --tag artichokeruby/artichoke:${{ matrix.image }}-nightly-${{ steps.trunk.outputs.sha }}
+          --tag artichokeruby/artichoke:${{ matrix.image }}-nightly-${{ steps.latest.outputs.commit }}
           --label "org.opencontainers.image.created=$(date --rfc-3339=seconds)"
-          --label "org.opencontainers.image.version=${{ steps.trunk.outputs.sha }}"
-          --label "org.opencontainers.image.revision=${{ steps.trunk.outputs.sha }}"
+          --label "org.opencontainers.image.version=${{ steps.latest.outputs.commit }}"
+          --label "org.opencontainers.image.revision=${{ steps.latest.outputs.commit }}"
 
       - name: Extra Canonical image tags
         if: matrix.image == 'ubuntu'
         run: |
           docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:latest
-          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:${{ steps.trunk.outputs.sha }}
+          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:${{ steps.latest.outputs.commit }}
           docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:${{ matrix.image }}18.04-nightly
 
       - name: Extra Debian image tags
