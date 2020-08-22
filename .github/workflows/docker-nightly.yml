@@ -93,7 +93,7 @@ jobs:
           push: ${{ github.ref == 'refs/heads/trunk' }}
 
   alpine:
-    name: Alipine 3.11
+    name: Alpine 3
     runs-on: ubuntu-latest
 
     steps:
