@@ -32,10 +32,16 @@ jobs:
         working-directory: artichoke
         run: echo "::set-output name=commit::$(git rev-parse HEAD)"
 
+      - name: Set Artichoke Rust toolchain version
+        id: rust_toolchain
+        working-directory: artichoke
+        run: echo "::set-output name=version::$(cat rust-toolchain)"
+
       - name: Build the Docker image
         run: >-
           docker build .
           --build-arg ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
+          --build-arg RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
           --file Dockerfile.${{ matrix.image }}
           --tag artichokeruby/artichoke:${{ matrix.image }}-nightly
           --tag artichokeruby/artichoke:${{ matrix.image }}-nightly-${{ steps.latest.outputs.commit }}
