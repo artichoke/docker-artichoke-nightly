@@ -10,13 +10,9 @@ on:
     - cron: "0 0 * * *" # build nightly!
 
 jobs:
-  build:
+  ubuntu-bionic:
+    name: Ubuntu 18.04 Bionic
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        image: [ubuntu, slim, alpine]
 
     steps:
       - uses: actions/checkout@v2
@@ -37,40 +33,104 @@ jobs:
         working-directory: artichoke
         run: echo "::set-output name=version::$(cat rust-toolchain)"
 
-      - name: Build the Docker image
-        run: >-
-          docker build .
-          --build-arg ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
-          --build-arg RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
-          --file Dockerfile.${{ matrix.image }}
-          --tag artichokeruby/artichoke:${{ matrix.image }}-nightly
-          --tag artichokeruby/artichoke:${{ matrix.image }}-nightly-${{ steps.latest.outputs.commit }}
-          --label "org.opencontainers.image.created=$(date --rfc-3339=seconds)"
-          --label "org.opencontainers.image.version=${{ steps.latest.outputs.commit }}"
-          --label "org.opencontainers.image.revision=${{ steps.latest.outputs.commit }}"
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: ubuntu/bionic/Dockerfile
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: artichokeruby/artichoke
+          tag_with_ref: false
+          tag_with_sha: false
+          tags: >
+            latest,
+            ${{ steps.latest.outputs.commit }},
+            ubunutu-nightly,
+            ubuntu18.04-nightly,
+            ubuntu-nightly-${{ steps.latest.outputs.commit }}
+          build_args: >
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},
+            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+          push: ${{ github.ref == 'refs/heads/trunk' }}
 
-      - name: Extra Canonical image tags
-        if: matrix.image == 'ubuntu'
-        run: |
-          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:latest
-          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:${{ steps.latest.outputs.commit }}
-          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokeruby/artichoke:${{ matrix.image }}18.04-nightly
+  debian-buster-slim:
+    name: Debian Buster Slim
+    runs-on: ubuntu-latest
 
-      - name: Extra Debian image tags
-        if: matrix.image == 'slim'
-        run: |
-          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokerb/artichoke:${{ matrix.image }}-buster-nightly
+    steps:
+      - uses: actions/checkout@v2
 
-      - name: Extra Alpine image tags
-        if: matrix.image == 'alpine'
-        run: |
-          docker tag artichokeruby/artichoke:${{ matrix.image }}-nightly artichokerb/artichoke:${{ matrix.image }}3-nightly
+      - name: Clone Artichoke
+        uses: actions/checkout@v2
+        with:
+          repository: artichoke/artichoke
+          path: artichoke
 
-      - name: Push the Docker image
-        if: github.ref == 'refs/heads/trunk'
-        env:
-          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        run: |
-          docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_TOKEN"
-          docker push artichokeruby/artichoke
+      - name: Set Artichoke latest commit
+        id: latest
+        working-directory: artichoke
+        run: echo "::set-output name=commit::$(git rev-parse HEAD)"
+
+      - name: Set Artichoke Rust toolchain version
+        id: rust_toolchain
+        working-directory: artichoke
+        run: echo "::set-output name=version::$(cat rust-toolchain)"
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: debian/buster/slim/Dockerfile
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: artichokeruby/artichoke
+          tag_with_ref: false
+          tag_with_sha: false
+          tags: >
+            slim-nightly,
+            slim-buster-nightly,
+            slim-nightly-${{ steps.latest.outputs.commit }}
+          build_args: >
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},
+            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+          push: ${{ github.ref == 'refs/heads/trunk' }}
+
+  alpine:
+    name: Alipine 3.11
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Clone Artichoke
+        uses: actions/checkout@v2
+        with:
+          repository: artichoke/artichoke
+          path: artichoke
+
+      - name: Set Artichoke latest commit
+        id: latest
+        working-directory: artichoke
+        run: echo "::set-output name=commit::$(git rev-parse HEAD)"
+
+      - name: Set Artichoke Rust toolchain version
+        id: rust_toolchain
+        working-directory: artichoke
+        run: echo "::set-output name=version::$(cat rust-toolchain)"
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: alpine/Dockerfile
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: artichokeruby/artichoke
+          tag_with_ref: false
+          tag_with_sha: false
+          tags: >
+            alpine-nightly,
+            alpine3-nightly,
+            alpine-nightly-${{ steps.latest.outputs.commit }}
+          build_args: >
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},
+            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+          push: ${{ github.ref == 'refs/heads/trunk' }}
