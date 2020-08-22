@@ -56,8 +56,8 @@ RUN set -eux; \
 
 # XXX HACK - The `ARTICHOKE_NIGHTLY_VER` build arg is unused, but can be set at
 # build time to break layer caching and force a rebuild of Artichoke from latest
-# master. The GitHub Actions workflow sets this to the latest master commit SHA
-# in the upstream Artichoke repository.
+# trunk. The GitHub Actions workflow sets this to the latest trunk commit SHA in
+# the upstream Artichoke repository.
 ARG ARTICHOKE_NIGHTLY_VER=latest
 # Intall musl-gcc for alpine taget
 RUN apt-get install -y musl-tools
