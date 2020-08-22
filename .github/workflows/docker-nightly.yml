@@ -49,8 +49,7 @@ jobs:
             ubuntu18.04-nightly,
             ubuntu-nightly-${{ steps.latest.outputs.commit }}
           build_args: >
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},
-            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
           push: ${{ github.ref == 'refs/heads/trunk' }}
 
   debian-buster-slim:
@@ -90,8 +89,7 @@ jobs:
             slim-buster-nightly,
             slim-nightly-${{ steps.latest.outputs.commit }}
           build_args: >
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},
-            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
           push: ${{ github.ref == 'refs/heads/trunk' }}
 
   alpine:
@@ -131,6 +129,5 @@ jobs:
             alpine3-nightly,
             alpine-nightly-${{ steps.latest.outputs.commit }}
           build_args: >
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},
-            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
           push: ${{ github.ref == 'refs/heads/trunk' }}
