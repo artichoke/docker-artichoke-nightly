@@ -50,5 +50,5 @@ Currently supported docker platforms are:
 - `RUBY_INSTALL_SHA` - SHA256 of the `ruby-install` package (e.g.
   `openssl dgst -sha256 PACKAGE`)
 - `ARTICHOKE_NIGHTLY_VER` - Argument used for cache invalidation (see
-  `Dockerfile`), defaults to SHA of latest master commit in upstream Artichoke
+  `Dockerfile`), defaults to SHA of latest trunk commit in upstream Artichoke
   repository.
