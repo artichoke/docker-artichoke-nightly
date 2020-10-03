@@ -34,24 +34,26 @@ jobs:
         working-directory: artichoke
         run: echo "::set-output name=version::$(cat rust-toolchain)"
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
-          dockerfile: ubuntu/bionic/Dockerfile
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: artichokeruby/artichoke
-          tag_with_ref: false
-          tag_with_sha: false
-          tags: >
-            latest,
-            ${{ steps.latest.outputs.commit }},
-            ubunutu-nightly,
-            ubuntu18.04-nightly,
-            ubuntu-nightly-${{ steps.latest.outputs.commit }}
-          build_args: >
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ubuntu/bionic/Dockerfile
           push: ${{ github.ref == 'refs/heads/trunk' }}
+          tags: >
+            artichokeruby/artichoke:latest,
+            artichokeruby/artichoke:${{ steps.latest.outputs.commit }},
+            artichokeruby/artichoke:ubunutu-nightly,
+            artichokeruby/artichoke:ubuntu18.04-nightly,
+            artichokeruby/artichoke:ubuntu-nightly-${{ steps.latest.outputs.commit }}
+          build-args: >
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
 
   debian-buster-slim:
     name: Debian Buster Slim
@@ -76,22 +78,24 @@ jobs:
         working-directory: artichoke
         run: echo "::set-output name=version::$(cat rust-toolchain)"
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
-          dockerfile: debian/buster/slim/Dockerfile
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: artichokeruby/artichoke
-          tag_with_ref: false
-          tag_with_sha: false
-          tags: >
-            slim-nightly,
-            slim-buster-nightly,
-            slim-nightly-${{ steps.latest.outputs.commit }}
-          build_args: >
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: debian/buster/slim/Dockerfile
           push: ${{ github.ref == 'refs/heads/trunk' }}
+          tags: >
+            artichokeruby/artichoke:slim-nightly,
+            artichokeruby/artichoke:slim-buster-nightly,
+            artichokeruby/artichoke:slim-nightly-${{ steps.latest.outputs.commit }}
+          build-args: >
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
 
   alpine:
     name: Alpine 3
@@ -116,19 +120,21 @@ jobs:
         working-directory: artichoke
         run: echo "::set-output name=version::$(cat rust-toolchain)"
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
-          dockerfile: alpine/Dockerfile
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: artichokeruby/artichoke
-          tag_with_ref: false
-          tag_with_sha: false
-          tags: >
-            alpine-nightly,
-            alpine3-nightly,
-            alpine-nightly-${{ steps.latest.outputs.commit }}
-          build_args: >
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: alpine/Dockerfile
           push: ${{ github.ref == 'refs/heads/trunk' }}
+          tags: >
+            artichokeruby/artichoke:alpine-nightly,
+            artichokeruby/artichoke:alpine3-nightly,
+            artichokeruby/artichoke:alpine-nightly-${{ steps.latest.outputs.commit }}
+          build-args: >
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
