@@ -59,8 +59,9 @@ jobs:
             artichokeruby/artichoke:ubunutu-nightly,
             artichokeruby/artichoke:ubuntu18.04-nightly,
             artichokeruby/artichoke:ubuntu-nightly-${{ steps.latest.outputs.commit }}
-          build-args: >
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+          build-args: |
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
+            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
 
   debian-buster-slim:
     name: Debian Buster Slim
@@ -108,8 +109,9 @@ jobs:
             artichokeruby/artichoke:slim-nightly,
             artichokeruby/artichoke:slim-buster-nightly,
             artichokeruby/artichoke:slim-nightly-${{ steps.latest.outputs.commit }}
-          build-args: >
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+          build-args: |
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
+            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
 
   alpine:
     name: Alpine 3
@@ -157,5 +159,6 @@ jobs:
             artichokeruby/artichoke:alpine-nightly,
             artichokeruby/artichoke:alpine3-nightly,
             artichokeruby/artichoke:alpine-nightly-${{ steps.latest.outputs.commit }}
-          build-args: >
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }},RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+          build-args: |
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
+            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
