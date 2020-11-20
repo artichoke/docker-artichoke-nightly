@@ -53,11 +53,11 @@ jobs:
           context: .
           file: ubuntu/bionic/Dockerfile
           push: ${{ github.ref == 'refs/heads/trunk' }}
-          tags: >
-            artichokeruby/artichoke:latest,
-            artichokeruby/artichoke:${{ steps.latest.outputs.commit }},
-            artichokeruby/artichoke:ubunutu-nightly,
-            artichokeruby/artichoke:ubuntu18.04-nightly,
+          tags: |
+            artichokeruby/artichoke:latest
+            artichokeruby/artichoke:${{ steps.latest.outputs.commit }}
+            artichokeruby/artichoke:ubunutu-nightly
+            artichokeruby/artichoke:ubuntu18.04-nightly
             artichokeruby/artichoke:ubuntu-nightly-${{ steps.latest.outputs.commit }}
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
@@ -105,9 +105,9 @@ jobs:
           context: .
           file: debian/buster/slim/Dockerfile
           push: ${{ github.ref == 'refs/heads/trunk' }}
-          tags: >
-            artichokeruby/artichoke:slim-nightly,
-            artichokeruby/artichoke:slim-buster-nightly,
+          tags: |
+            artichokeruby/artichoke:slim-nightly
+            artichokeruby/artichoke:slim-buster-nightly
             artichokeruby/artichoke:slim-nightly-${{ steps.latest.outputs.commit }}
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
@@ -155,9 +155,9 @@ jobs:
           context: .
           file: alpine/Dockerfile
           push: ${{ github.ref == 'refs/heads/trunk' }}
-          tags: >
-            artichokeruby/artichoke:alpine-nightly,
-            artichokeruby/artichoke:alpine3-nightly,
+          tags: |
+            artichokeruby/artichoke:alpine-nightly
+            artichokeruby/artichoke:alpine3-nightly
             artichokeruby/artichoke:alpine-nightly-${{ steps.latest.outputs.commit }}
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
