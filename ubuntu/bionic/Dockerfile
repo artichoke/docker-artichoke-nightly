@@ -57,7 +57,10 @@ RUN set -eux; \
 ARG ARTICHOKE_NIGHTLY_VER=latest
 # Install artichoke
 RUN set -eux; \
-    RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --locked artichoke; \
+    RUSTFLAGS="-C link-arg=-s" cargo install \
+    --git https://github.com/artichoke/artichoke \
+    --branch trunk \
+    --locked artichoke; \
     airb --version; \
     artichoke --version;
 

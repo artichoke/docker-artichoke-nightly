@@ -63,7 +63,10 @@ ARG ARTICHOKE_NIGHTLY_VER=latest
 RUN apt-get install -y musl-tools
 # Install artichoke
 RUN set -eux; \
-    RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --locked artichoke \
+    RUSTFLAGS="-C link-arg=-s" cargo install \
+    --git https://github.com/artichoke/artichoke \
+    --branch trunk \
+    --locked artichoke \
     --target x86_64-unknown-linux-musl; \
     airb --version; \
     artichoke --version;
