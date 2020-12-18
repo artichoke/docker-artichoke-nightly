@@ -61,7 +61,7 @@ ARG ARTICHOKE_NIGHTLY_VER=latest
 RUN set -eux; \
     if [[ "$ARTICHOKE_NIGHTLY_VER" == "latest" ]];then \
       RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --branch trunk --locked artichoke; \
-    else; \
+    else \
       RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --rev "$ARTICHOKE_NIGHTLY_VER" --locked artichoke; \
     fi; \
     airb --version; \
