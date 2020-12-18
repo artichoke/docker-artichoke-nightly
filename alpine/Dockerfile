@@ -54,17 +54,23 @@ RUN set -eux; \
     gem --version; \
     bundle --version;
 
-# XXX HACK - The `ARTICHOKE_NIGHTLY_VER` build arg is unused, but can be set at
-# build time to break layer caching and force a rebuild of Artichoke from latest
-# trunk. The GitHub Actions workflow sets this to the latest trunk commit SHA in
-# the upstream Artichoke repository.
-ARG ARTICHOKE_NIGHTLY_VER=latest
 # Intall musl-gcc for alpine taget
 RUN apt-get install -y musl-tools
+
+# The `ARTICHOKE_NIGHTLY_VER` build arg allows building a specific revision of
+# Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
+# SHA in the upstream Artichoke repository.
+#
+# If this build arg is not set via the docker command line, the `trunk` branch
+# is built.
+ARG ARTICHOKE_NIGHTLY_VER=latest
 # Install artichoke
 RUN set -eux; \
-    RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --locked artichoke \
-    --target x86_64-unknown-linux-musl; \
+    if [[ "$ARTICHOKE_NIGHTLY_VER" == "latest" ]];then \
+      RUSTFLAGS="-C link-arg=-s" cargo install --target x86_64-unknown-linux-musl --git https://github.com/artichoke/artichoke --branch trunk --locked artichoke; \
+    else \
+      RUSTFLAGS="-C link-arg=-s" cargo install --target x86_64-unknown-linux-musl --git https://github.com/artichoke/artichoke --rev "$ARTICHOKE_NIGHTLY_VER" --locked artichoke; \
+    fi; \
     airb --version; \
     artichoke --version;
 
