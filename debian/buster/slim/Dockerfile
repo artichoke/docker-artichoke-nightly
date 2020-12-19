@@ -59,7 +59,7 @@ RUN set -eux; \
 ARG ARTICHOKE_NIGHTLY_VER=latest
 # Install artichoke
 RUN set -eux; \
-    if [[ "$ARTICHOKE_NIGHTLY_VER" == "latest" ]];then \
+    if [[ "$ARTICHOKE_NIGHTLY_VER" == "latest" ]]; then \
       RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --branch trunk --locked artichoke; \
     else \
       RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --rev "$ARTICHOKE_NIGHTLY_VER" --locked artichoke; \
