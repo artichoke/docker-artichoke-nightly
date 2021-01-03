@@ -10,6 +10,28 @@ name: CI
   schedule:
     - cron: "0 0 * * TUE"
 jobs:
+  docker:
+    name: Lint Dockerfiles
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Lint Ubuntu Bionic Dockerfile
+        uses: brpaz/hadolint-action@master
+        with:
+          dockerfile: "ubuntu/bionic/Dockerfile"
+
+      - name: Lint Debian Buster Slim Dockerfile
+        uses: brpaz/hadolint-action@master
+        with:
+          dockerfile: "debian/buster/slim/Dockerfile"
+
+      - name: Lint Alpine Dockerfile
+        uses: brpaz/hadolint-action@master
+        with:
+          dockerfile: "alpine/Dockerfile"
+
   text:
     name: Lint and format text
     runs-on: ubuntu-latest
