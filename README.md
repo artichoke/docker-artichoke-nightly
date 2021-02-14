@@ -1,14 +1,13 @@
 # Artichoke Nightly Docker
 
 [![GitHub Actions](https://github.com/artichoke/docker-artichoke-nightly/workflows/CI/badge.svg)](https://github.com/artichoke/docker-artichoke-nightly/actions)
+[![Nightly Build](https://github.com/artichoke/docker-artichoke-nightly/workflows/Docker%20Image%20CI/badge.svg)](https://github.com/artichoke/docker-artichoke-nightly/actions)
 [![Discord](https://img.shields.io/discord/607683947496734760)](https://discord.gg/QCe2tp2)
 [![Twitter](https://img.shields.io/twitter/follow/artichokeruby?label=Follow&style=social)](https://twitter.com/artichokeruby)
 
-Docker images for nightly builds of
-[Artichoke Ruby](https://github.com/artichoke/artichoke).
+Docker images for nightly builds of [Artichoke Ruby][artichoke-repo].
 
-Pull and run the
-[latest image from Docker Hub](https://hub.docker.com/r/artichokeruby/artichoke):
+Pull and run the [latest image from Docker Hub][docker-hub]:
 
 ```console
 $ docker run -it docker.io/artichokeruby/artichoke airb
@@ -52,3 +51,6 @@ Currently supported docker platforms are:
 - `ARTICHOKE_NIGHTLY_VER` - Argument used for cache invalidation (see
   `Dockerfile`), defaults to SHA of latest trunk commit in upstream Artichoke
   repository.
+
+[artichoke-repo]: https://github.com/artichoke/artichoke
+[docker-hub]: https://hub.docker.com/r/artichokeruby/artichoke
