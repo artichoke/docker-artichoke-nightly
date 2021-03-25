@@ -40,7 +40,7 @@ RUN set -eux; \
         *) echo >&2 "unsupported architecture: ${dpkgArch}"; exit 1 ;; \
     esac; \
     url="https://static.rust-lang.org/rustup/archive/1.23.1/${rustArch}/rustup-init"; \
-    wget "$url"; \
+    wget --progress=dot:giga "$url"; \
     echo "${rustupSha256} *rustup-init" | sha256sum -c -; \
     chmod +x rustup-init; \
     ./rustup-init -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION --default-host ${rustArch}; \
@@ -62,7 +62,7 @@ ARG RUBY_INSTALL_SHA=d96fce7a4df70ca7a367400fbe035ff5b518408fc55924966743abf66ea
 RUN set -eux; \
     echo 'gem: --no-document' >> /usr/local/etc/gemrc; \
     url="https://github.com/postmodern/ruby-install/archive/v$RUBY_INSTALL_VERSION.tar.gz"; \
-    wget -O /tmp/ruby-install.tar.gz "$url"; \
+    wget --progress=dot:giga -O /tmp/ruby-install.tar.gz "$url"; \
     echo "${RUBY_INSTALL_SHA} /tmp/ruby-install.tar.gz" | sha256sum -c -; \
     tar -xzvf /tmp/ruby-install.tar.gz -C /opt && rm /tmp/ruby-install.tar.gz; \
     /opt/ruby-install-$RUBY_INSTALL_VERSION/bin/ruby-install --no-install-deps --install-dir /usr/local/ ruby $RUBY_VERSION -- --disable-install-rdoc; \
