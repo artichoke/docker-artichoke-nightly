@@ -18,19 +18,22 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Lint Ubuntu Bionic Dockerfile
-        uses: brpaz/hadolint-action@master
+        uses: docker://hadolint/hadolint:latest
         with:
-          dockerfile: "ubuntu/bionic/Dockerfile"
+          entrypoint: /bin/hadolint
+          args: --config /github/workspace/.hadolint.yaml /github/workspace/ubuntu/bionic/Dockerfile
 
       - name: Lint Debian Buster Slim Dockerfile
-        uses: brpaz/hadolint-action@master
+        uses: docker://hadolint/hadolint:latest
         with:
-          dockerfile: "debian/buster/slim/Dockerfile"
+          entrypoint: /bin/hadolint
+          args: --config /github/workspace/.hadolint.yaml /github/workspace/debian/buster/slim/Dockerfile
 
       - name: Lint Alpine Dockerfile
-        uses: brpaz/hadolint-action@master
+        uses: docker://hadolint/hadolint:latest
         with:
-          dockerfile: "alpine/Dockerfile"
+          entrypoint: /bin/hadolint
+          args: --config /github/workspace/.hadolint.yaml /github/workspace/alpine/Dockerfile
 
   text:
     name: Lint and format text
