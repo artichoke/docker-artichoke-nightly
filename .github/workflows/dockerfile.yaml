@@ -11,8 +11,8 @@ name: Docker Image CI (defaults)
     - cron: "0 0 * * TUE"
 
 jobs:
-  ubuntu-bionic:
-    name: Ubuntu 18.04 Bionic
+  ubuntu:
+    name: Ubuntu
     runs-on: ubuntu-latest
 
     steps:
@@ -28,8 +28,8 @@ jobs:
           file: ubuntu/bionic/Dockerfile
           push: false
 
-  debian-buster-slim:
-    name: Debian Buster Slim
+  debian-slim:
+    name: Debian Slim
     runs-on: ubuntu-latest
 
     steps:
@@ -46,7 +46,7 @@ jobs:
           push: false
 
   alpine:
-    name: Alpine 3
+    name: Alpine
     runs-on: ubuntu-latest
 
     steps:

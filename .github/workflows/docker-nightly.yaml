@@ -11,8 +11,8 @@ name: Docker Image CI
     - cron: "0 0 * * *" # build nightly!
 
 jobs:
-  ubuntu-bionic:
-    name: Ubuntu 18.04 Bionic
+  ubuntu:
+    name: Ubuntu
     runs-on: ubuntu-latest
 
     steps:
@@ -63,8 +63,8 @@ jobs:
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
 
-  debian-buster-slim:
-    name: Debian Buster Slim
+  debian-slim:
+    name: Debian Slim
     runs-on: ubuntu-latest
 
     steps:
@@ -114,7 +114,7 @@ jobs:
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
 
   alpine:
-    name: Alpine 3
+    name: Alpine
     runs-on: ubuntu-latest
 
     steps:
