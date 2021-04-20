@@ -1,4 +1,4 @@
-FROM debian:buster-slim AS build
+FROM debian:bullseye-slim AS build
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bison \
@@ -86,7 +86,7 @@ RUN set -eux; \
     artichoke --version;
 
 # Setup runtime
-FROM debian:buster-slim AS runtime
+FROM debian:bullseye-slim AS runtime
 
 LABEL org.opencontainers.image.authors="Artem Yakimenko <http://temikus.net>, Ryan Lopopolo <rjl@hyperbo.la>"
 LABEL org.opencontainers.image.url="https://github.com/artichoke/docker-artichoke-nightly"

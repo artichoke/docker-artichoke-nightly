@@ -17,17 +17,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Lint Ubuntu Bionic Dockerfile
+      - name: Lint Ubuntu Dockerfile
         uses: docker://hadolint/hadolint:latest
         with:
           entrypoint: /bin/hadolint
           args: --config /github/workspace/.hadolint.yaml /github/workspace/ubuntu/bionic/Dockerfile
 
-      - name: Lint Debian Buster Slim Dockerfile
+      - name: Lint Debian Slim Dockerfile
         uses: docker://hadolint/hadolint:latest
         with:
           entrypoint: /bin/hadolint
-          args: --config /github/workspace/.hadolint.yaml /github/workspace/debian/buster/slim/Dockerfile
+          args: --config /github/workspace/.hadolint.yaml /github/workspace/debian/bullseye/slim/Dockerfile
 
       - name: Lint Alpine Dockerfile
         uses: docker://hadolint/hadolint:latest
