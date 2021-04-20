@@ -30,8 +30,8 @@ Currently supported docker platforms are:
 
 - `ubuntu` - canonical mainline image, tagged with `latest`, `ubuntu-nightly`,
   and `ubuntu18.04-nightly`.
-- `debian-slim` - Debian 10 (Buster) slim image, tagged `slim-nightly` and
-  `slim-buster-nightly`.
+- `debian-slim` - Debian 11 (Bullseye) slim image, tagged `slim-nightly` and
+  `slim-bullseye-nightly`.
 - `alpine` - Alpine 3 image, tagged with `alpine-nightly` and `alpine3-nightly`.
 
 #### Secrets

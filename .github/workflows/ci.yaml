@@ -27,7 +27,7 @@ jobs:
         uses: docker://hadolint/hadolint:latest
         with:
           entrypoint: /bin/hadolint
-          args: --config /github/workspace/.hadolint.yaml /github/workspace/debian/buster/slim/Dockerfile
+          args: --config /github/workspace/.hadolint.yaml /github/workspace/debian/bullseye/slim/Dockerfile
 
       - name: Lint Alpine Dockerfile
         uses: docker://hadolint/hadolint:latest
