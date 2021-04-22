@@ -1,6 +1,6 @@
-FROM ubuntu:18.04 AS build
+FROM ubuntu:20.04 AS build
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     bison \
     build-essential \
     ca-certificates \
@@ -86,7 +86,7 @@ RUN set -eux; \
     artichoke --version;
 
 # Setup runtime
-FROM ubuntu:18.04 AS runtime
+FROM ubuntu:20.04 AS runtime
 
 LABEL org.opencontainers.image.authors="Artem Yakimenko <http://temikus.net>, Ryan Lopopolo <rjl@hyperbo.la>"
 LABEL org.opencontainers.image.url="https://github.com/artichoke/docker-artichoke-nightly"

@@ -21,7 +21,7 @@ jobs:
         uses: docker://hadolint/hadolint:latest
         with:
           entrypoint: /bin/hadolint
-          args: --config /github/workspace/.hadolint.yaml /github/workspace/ubuntu/bionic/Dockerfile
+          args: --config /github/workspace/.hadolint.yaml /github/workspace/ubuntu/focal/Dockerfile
 
       - name: Lint Debian Slim Dockerfile
         uses: docker://hadolint/hadolint:latest
