@@ -51,13 +51,14 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ubuntu/bionic/Dockerfile
+          file: ubuntu/focal/Dockerfile
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
             artichokeruby/artichoke:latest
             artichokeruby/artichoke:${{ steps.latest.outputs.commit }}
             artichokeruby/artichoke:ubuntu-nightly
-            artichokeruby/artichoke:ubuntu18.04-nightly
+            artichokeruby/artichoke:ubuntu-focal-nightly
+            artichokeruby/artichoke:ubuntu20.04-nightly
             artichokeruby/artichoke:ubuntu-nightly-${{ steps.latest.outputs.commit }}
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
