@@ -1,6 +1,6 @@
-FROM ubuntu:18.04 AS build
+FROM ubuntu:20.04 AS build
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     bison \
     build-essential \
     ca-certificates \
