@@ -50,10 +50,6 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-# Add libmusl support for Alpine
-RUN set -eux; \
-    rustup target add x86_64-unknown-linux-musl
-
 # Ruby setup
 ARG RUBY_VERSION=2.6.3
 ARG RUBY_INSTALL_VERSION=0.8.1
@@ -71,6 +67,10 @@ RUN set -eux; \
     ruby --version; \
     gem --version; \
     bundle --version;
+
+# Add libmusl support for Alpine
+RUN set -eux; \
+    rustup target add x86_64-unknown-linux-musl
 
 # The `ARTICHOKE_NIGHTLY_VER` build arg allows building a specific revision of
 # Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
