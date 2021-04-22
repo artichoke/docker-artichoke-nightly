@@ -56,7 +56,7 @@ jobs:
           tags: |
             artichokeruby/artichoke:latest
             artichokeruby/artichoke:${{ steps.latest.outputs.commit }}
-            artichokeruby/artichoke:ubunutu-nightly
+            artichokeruby/artichoke:ubuntu-nightly
             artichokeruby/artichoke:ubuntu18.04-nightly
             artichokeruby/artichoke:ubuntu-nightly-${{ steps.latest.outputs.commit }}
           build-args: |
