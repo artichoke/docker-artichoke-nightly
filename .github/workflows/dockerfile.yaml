@@ -27,6 +27,8 @@ jobs:
           context: .
           file: ubuntu/focal/Dockerfile
           push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   debian-slim:
     name: Debian Slim
@@ -44,6 +46,8 @@ jobs:
           context: .
           file: debian/bullseye/slim/Dockerfile
           push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   alpine:
     name: Alpine
@@ -61,3 +65,5 @@ jobs:
           context: .
           file: alpine/Dockerfile
           push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
