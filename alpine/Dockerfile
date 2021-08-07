@@ -72,6 +72,11 @@ RUN set -eux; \
 RUN set -eux; \
     rustup target add x86_64-unknown-linux-musl
 
+# Install bindgen
+RUN set -eux; \
+    cargo install --version 0.59.1 bindgen; \
+    bindgen --version
+
 # The `ARTICHOKE_NIGHTLY_VER` build arg allows building a specific revision of
 # Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
 # SHA in the upstream Artichoke repository.
