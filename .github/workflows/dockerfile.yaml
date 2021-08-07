@@ -27,8 +27,8 @@ jobs:
           context: .
           file: ubuntu/focal/Dockerfile
           push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=docker-defaults-${{ github.workflow }}-${{ github.job }}-${{ runner.os }}-v1
+          cache-to: type=gha,mode=max,scope=docker-defaults-${{ github.workflow }}-${{ github.job }}-${{ runner.os }}-v1
 
   debian-slim:
     name: Debian Slim
@@ -46,8 +46,8 @@ jobs:
           context: .
           file: debian/bullseye/slim/Dockerfile
           push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=docker-defaults-${{ github.workflow }}-${{ github.job }}-${{ runner.os }}-v1
+          cache-to: type=gha,mode=max,scope=docker-defaults-${{ github.workflow }}-${{ github.job }}-${{ runner.os }}-v1
 
   alpine:
     name: Alpine
@@ -65,5 +65,5 @@ jobs:
           context: .
           file: alpine/Dockerfile
           push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=docker-defaults-${{ github.workflow }}-${{ github.job }}-${{ runner.os }}-v1
+          cache-to: type=gha,mode=max,scope=docker-defaults-${{ github.workflow }}-${{ github.job }}-${{ runner.os }}-v1
