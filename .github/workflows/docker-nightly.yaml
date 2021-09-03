@@ -43,6 +43,7 @@ jobs:
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.ref == 'refs/heads/trunk' }}
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -96,6 +97,7 @@ jobs:
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.ref == 'refs/heads/trunk' }}
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -146,6 +148,7 @@ jobs:
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.ref == 'refs/heads/trunk' }}
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
