@@ -88,7 +88,11 @@ RUN set -eux; \
       RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --rev "$ARTICHOKE_NIGHTLY_VER" --locked artichoke; \
     fi; \
     airb --version; \
-    artichoke --version;
+    artichoke --version; \
+    mkdir /target; \
+    touch /target/THIRDPARTY;
+
+COPY empty.txt THIRDPART[Y] /target/
 
 # Setup runtime
 FROM ubuntu:20.04 AS runtime
@@ -104,6 +108,7 @@ LABEL org.opencontainers.image.description="Distribution of artichoke CLI and ai
 
 COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
+COPY --from=build /target/THIRDPARTY /opt/artichoke/THIRDPARTY
 
 RUN groupadd --system --gid 128142 artichoke && \
     useradd --no-log-init --system --gid artichoke --uid 128142 artichoke
