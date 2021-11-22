@@ -48,7 +48,7 @@ jobs:
           profile: minimal
 
       - name: Install cargo-about
-        run: cargo install cargo-about
+        run: cargo install --locked cargo-about
 
       - name: Install Ruby toolchain
         uses: ruby/setup-ruby@v1
@@ -128,7 +128,7 @@ jobs:
           profile: minimal
 
       - name: Install cargo-about
-        run: cargo install cargo-about
+        run: cargo install --locked cargo-about
 
       - name: Install Ruby toolchain
         uses: ruby/setup-ruby@v1
@@ -205,7 +205,7 @@ jobs:
           profile: minimal
 
       - name: Install cargo-about
-        run: cargo install cargo-about
+        run: cargo install --locked cargo-about
 
       - name: Install Ruby toolchain
         uses: ruby/setup-ruby@v1
