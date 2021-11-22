@@ -218,7 +218,7 @@ jobs:
         working-directory: "artichoke"
 
       - name: Generate THIRDPARTY
-        run: bundle exec generate-third-party-text-file-single-target x86_64-unknown-linux-gnu > ../THIRDPARTY
+        run: bundle exec generate-third-party-text-file-single-target x86_64-unknown-linux-musl > ../THIRDPARTY
         working-directory: "artichoke"
 
       - name: Set up Docker Buildx
