@@ -55,24 +55,6 @@ COPY <<EOF $CARGO_HOME/config.toml
 git-fetch-with-cli = true
 EOF
 
-# Ruby setup
-ARG RUBY_VERSION=3.0.2
-ARG RUBY_INSTALL_VERSION=0.8.3
-ARG RUBY_INSTALL_SHA=e2f69949757d032d48ee5c028be020bdc8863c41d5648b53328903d2e16ab3b2
-
-RUN set -eux; \
-    echo 'gem: --no-document' >> /usr/local/etc/gemrc; \
-    url="https://github.com/postmodern/ruby-install/archive/v$RUBY_INSTALL_VERSION.tar.gz"; \
-    wget --progress=dot:giga -O /tmp/ruby-install.tar.gz "$url"; \
-    echo "${RUBY_INSTALL_SHA} /tmp/ruby-install.tar.gz" | sha256sum -c -; \
-    tar -xzvf /tmp/ruby-install.tar.gz -C /opt && rm /tmp/ruby-install.tar.gz; \
-    /opt/ruby-install-$RUBY_INSTALL_VERSION/bin/ruby-install --no-install-deps --install-dir /usr/local/ ruby $RUBY_VERSION -- --disable-install-rdoc; \
-    rm /usr/local/src/ruby-$RUBY_VERSION.tar.xz; \
-    gem update --system; \
-    ruby --version; \
-    gem --version; \
-    bundle --version;
-
 # Install bindgen
 RUN set -eux; \
     cargo install --version 0.59.1 bindgen; \
