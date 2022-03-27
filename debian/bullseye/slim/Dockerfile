@@ -7,7 +7,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     libclang-dev \
     llvm-dev \
-    musl-tools \
     pkg-config \
     wget \
     && rm -rf /var/lib/apt/lists/*

@@ -7,7 +7,6 @@ RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no
     git \
     libclang-dev \
     llvm-dev \
-    musl-tools \
     pkg-config \
     wget \
     && rm -rf /var/lib/apt/lists/*
