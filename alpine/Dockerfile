@@ -50,6 +50,11 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
+COPY <<EOF $CARGO_HOME/config.toml
+[net]
+git-fetch-with-cli = true
+EOF
+
 # Ruby setup
 ARG RUBY_VERSION=3.0.2
 ARG RUBY_INSTALL_VERSION=0.8.3
