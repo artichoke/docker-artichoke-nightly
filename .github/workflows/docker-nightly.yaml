@@ -38,17 +38,17 @@ jobs:
           echo "Rust toolchain version: $(cat rust-toolchain)"
           echo "::set-output name=version::$(cat rust-toolchain)"
 
+      - name: Install cargo-about
+        run: |
+          release_url="$(curl \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/EmbarkStudios/cargo-about/releases | \
+            jq -r '.[0].assets | map(select(.browser_download_url | test(".*x86_64-unknown-linux.*tar.gz$"))) | .[0].browser_download_url')"
+
+          curl -sL "$release_url" | sudo tar xvz -C /usr/local/bin/ --strip-components=1
+
       - name: Setup .ruby-version override
         run: cp artichoke/.ruby-version .ruby-version
-
-      - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-
-      - name: Install cargo-about
-        run: cargo install --locked cargo-about
 
       - name: Install Ruby toolchain
         uses: ruby/setup-ruby@v1
@@ -118,17 +118,17 @@ jobs:
           echo "Rust toolchain version: $(cat rust-toolchain)"
           echo "::set-output name=version::$(cat rust-toolchain)"
 
+      - name: Install cargo-about
+        run: |
+          release_url="$(curl \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/EmbarkStudios/cargo-about/releases | \
+            jq -r '.[0].assets | map(select(.browser_download_url | test(".*x86_64-unknown-linux.*tar.gz$"))) | .[0].browser_download_url')"
+
+          curl -sL "$release_url" | sudo tar xvz -C /usr/local/bin/ --strip-components=1
+
       - name: Setup .ruby-version override
         run: cp artichoke/.ruby-version .ruby-version
-
-      - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-
-      - name: Install cargo-about
-        run: cargo install --locked cargo-about
 
       - name: Install Ruby toolchain
         uses: ruby/setup-ruby@v1
@@ -195,17 +195,17 @@ jobs:
           echo "Rust toolchain version: $(cat rust-toolchain)"
           echo "::set-output name=version::$(cat rust-toolchain)"
 
+      - name: Install cargo-about
+        run: |
+          release_url="$(curl \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/EmbarkStudios/cargo-about/releases | \
+            jq -r '.[0].assets | map(select(.browser_download_url | test(".*x86_64-unknown-linux.*tar.gz$"))) | .[0].browser_download_url')"
+
+          curl -sL "$release_url" | sudo tar xvz -C /usr/local/bin/ --strip-components=1
+
       - name: Setup .ruby-version override
         run: cp artichoke/.ruby-version .ruby-version
-
-      - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-
-      - name: Install cargo-about
-        run: cargo install --locked cargo-about
 
       - name: Install Ruby toolchain
         uses: ruby/setup-ruby@v1
