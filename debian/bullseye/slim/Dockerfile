@@ -1,25 +1,15 @@
 FROM debian:bullseye-slim AS build
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    bison \
     build-essential \
     ca-certificates \
     clang \
-    cmake \
     git \
     libclang-dev \
-    libgdbm-dev \
-    libffi-dev \
-    libncurses5-dev \
-    libreadline-dev \
-    libssl-dev \
-    libyaml-dev \
     llvm-dev \
     musl-tools \
     pkg-config \
     wget \
-    xz-utils \
-    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Rust setup
