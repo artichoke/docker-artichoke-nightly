@@ -43,11 +43,7 @@ Currently supported docker platforms are:
 
 #### Build Args
 
-- `RUST_VERSION` - Rust toolchain version
-- `RUBY_VERSION` - Version of the ruby interpreter to build
-- `RUBY_INSTALL_VERSION` - Version of the `ruby-install` tool to use
-- `RUBY_INSTALL_SHA` - SHA256 of the `ruby-install` package (e.g.
-  `openssl dgst -sha256 PACKAGE`)
+- `RUST_VERSION` - Rust toolchain version.
 - `ARTICHOKE_NIGHTLY_VER` - Argument used for cache invalidation (see
   `Dockerfile`), defaults to SHA of latest trunk commit in upstream Artichoke
   repository.
