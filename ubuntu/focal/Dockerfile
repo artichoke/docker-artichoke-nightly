@@ -3,7 +3,6 @@ FROM ubuntu:20.04 AS build
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    build-essential \
     ca-certificates \
     clang \
     git \
