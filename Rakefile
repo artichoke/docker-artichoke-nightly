@@ -54,3 +54,34 @@ namespace :release do
     end
   end
 end
+
+RUST_VERSION = '1.60.0'
+
+namespace :toolchain do
+  desc 'Sync Rust toolchain to all sources'
+  task sync: %i[sync:dockerfiles]
+
+  namespace :sync do
+    desc 'Sync the Rust toolchain to all Dockerfiles'
+    task :dockerfiles do
+      regexp = /^ARG RUST_VERSION=(.+)$/
+      next_rust_version = "ARG RUST_VERSION=#{RUST_VERSION}"
+
+      dockerfiles = FileList.new('**/Dockerfile')
+
+      failures = dockerfiles.map do |file|
+        contents = File.read(file)
+
+        if (existing_version = contents.match(regexp))
+          File.write(file, contents.gsub(regexp, next_rust_version)) if existing_version != RUST_VERSION
+          next
+        end
+
+        puts "Failed to update #{file}, ensure there is a RUST_VERSION arg specified" if Rake.verbose
+        file
+      end.compact
+
+      raise 'Failed to update some RUST_VERSION args' if failures.any?
+    end
+  end
+end
