@@ -7,7 +7,6 @@ RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no
     clang \
     git \
     libclang-dev \
-    pkg-config \
     wget \
     && rm -rf /var/lib/apt/lists/*
 

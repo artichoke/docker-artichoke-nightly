@@ -7,7 +7,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     clang \
     git \
     libclang-dev \
-    pkg-config \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
