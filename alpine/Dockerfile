@@ -38,11 +38,6 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-COPY <<EOF $CARGO_HOME/config.toml
-[net]
-git-fetch-with-cli = true
-EOF
-
 # Add libmusl support for Alpine
 RUN set -eux; \
     rustup target add x86_64-unknown-linux-musl

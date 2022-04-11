@@ -37,11 +37,6 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-COPY <<EOF $CARGO_HOME/config.toml
-[net]
-git-fetch-with-cli = true
-EOF
-
 # Install bindgen
 RUN set -eux; \
     cargo install --version 0.59.1 bindgen; \
