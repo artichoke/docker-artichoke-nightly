@@ -17,10 +17,12 @@
 Nightly builds of Artichoke Ruby.
 
 Artichoke is a Ruby implementation written in Rust and Ruby. Artichoke intends
-to be [MRI-compatible][ruby-spec] and targets Ruby 2.6.3. Artichoke provides a
-Ruby runtime implemented in Rust and Ruby.
+to be [MRI-compatible][ruby-spec] and targets [recent MRI Ruby][mri-target].
+Artichoke provides a Ruby runtime implemented in Rust and Ruby.
 
 [ruby-spec]: https://github.com/ruby/spec
+[mri-target]:
+  https://github.com/artichoke/artichoke/blob/trunk/RUBYSPEC.md#mri-target
 
 ## Install Artichoke
 
