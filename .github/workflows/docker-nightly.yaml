@@ -67,13 +67,7 @@ jobs:
         with:
           artichoke_ref: ${{ steps.latest.outputs.commit }}
           target_triple: ${{ matrix.target_triple }}
-
-      - name: Output THIRDPARTY listing
-        run: |
-          echo "$THIRD_PARTY_LICENSES" > THIRDPARTY
-        env:
-          THIRD_PARTY_LICENSES: |
-            ${{ steps.generate_third_party.outputs.third_party_licenses }}
+          output_file: THIRDPARTY
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
