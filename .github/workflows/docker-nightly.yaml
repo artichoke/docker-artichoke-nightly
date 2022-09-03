@@ -1,5 +1,5 @@
 ---
-name: Docker Image CI
+name: Docker Nightly Builder
 "on":
   push:
     branches:
