@@ -10,6 +10,37 @@ name: CI
   schedule:
     - cron: "0 0 * * TUE"
 jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        build:
+          - alpine
+          - debian
+          - ubuntu
+        include:
+          - build: alpine
+            dockerfile: alpine/Dockerfile
+          - build: debian
+            dockerfile: debian/bullseye/slim/Dockerfile
+          - build: ubuntu
+            dockerfile: ubuntu/focal/Dockerfile
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: false
+
   docker:
     name: Lint Dockerfiles
     runs-on: ubuntu-latest
