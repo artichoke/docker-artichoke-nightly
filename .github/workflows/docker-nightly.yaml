@@ -11,9 +11,32 @@ name: Docker Image CI
     - cron: "0 0 * * *" # build nightly!
 
 jobs:
-  ubuntu:
-    name: Ubuntu
+  nightly:
+    name: Nightly
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        build:
+          - alpine
+          - debian
+          - ubuntu
+        include:
+          - build: alpine
+            target_triple: x86_64-unknown-linux-musl
+            dockerfile: alpine/Dockerfile
+            tag_bare: alpine
+            tag_version: alpine3
+          - build: debian
+            target_triple: x86_64-unknown-linux-gnu
+            dockerfile: debian/bullseye/slim/Dockerfile
+            tag_bare: slim
+            tag_version: slim-bullseye
+          - build: ubuntu
+            target_triple: x86_64-unknown-linux-gnu
+            dockerfile: ubuntu/focal/Dockerfile
+            tag_bare: ubuntu
+            tag_version: ubuntu-focal
 
     steps:
       - uses: actions/checkout@v3
@@ -38,31 +61,16 @@ jobs:
           echo "Rust toolchain version: $(cat rust-toolchain)"
           echo "::set-output name=version::$(cat rust-toolchain)"
 
-      - name: Install cargo-about
-        run: |
-          release_url="$(curl \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/EmbarkStudios/cargo-about/releases | \
-            jq -r '.[0].assets | map(select(.browser_download_url | test(".*x86_64-unknown-linux.*tar.gz$"))) | .[0].browser_download_url')"
-
-          curl -sL "$release_url" | sudo tar xvz -C /usr/local/bin/ --strip-components=1
-
-      - name: Setup .ruby-version override
-        run: cp artichoke/.ruby-version .ruby-version
-
-      - name: Install Ruby toolchain
-        uses: ruby/setup-ruby@v1
+      - name: Generate THIRDPARTY license listing
+        id: generate_third_party
+        uses: artichoke/generate_third_party@trunk
         with:
-          ruby-version: ".ruby-version"
-          bundler-cache: true
+          artichoke_ref: ${{ steps.latest.outputs.commit }}
+          target_triple: ${{ matrix.target_triple }}
 
-      - name: Install RubyGems
-        run: bundle install
-        working-directory: "artichoke"
-
-      - name: Generate THIRDPARTY
-        run: bundle exec generate-third-party-text-file-single-target x86_64-unknown-linux-gnu > ../THIRDPARTY
-        working-directory: "artichoke"
+      - name: Output THIRDPARTY listing
+        run: |
+          echo "${{ steps.generate_third_party.outputs.third_party_licenses }}" > THIRDPARTY
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -78,169 +86,29 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ubuntu/focal/Dockerfile
+          file: ${{ matrix.dockerfile }}
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
             artichokeruby/artichoke:latest
             artichokeruby/artichoke:${{ steps.latest.outputs.commit }}
-            artichokeruby/artichoke:ubuntu-nightly
-            artichokeruby/artichoke:ubuntu-focal-nightly
+            artichokeruby/artichoke:${{ matrix.tag_bare }}-nightly
+            artichokeruby/artichoke:${{ matrix.tag_version }}-nightly
+            artichokeruby/artichoke:${{ matrix.tag_bare }}-nightly-${{ steps.latest.outputs.commit }}
+          build-args: |
+            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
+            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+
+      - name: Build and push Docker images (Ubuntu extra tags)
+        uses: docker/build-push-action@v3
+        if: ${{ matrix.build }} == 'ubuntu'
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: ${{ github.ref == 'refs/heads/trunk' }}
+          tags: |
+            artichokeruby/artichoke:latest
+            artichokeruby/artichoke:${{ steps.latest.outputs.commit }}
             artichokeruby/artichoke:ubuntu20.04-nightly
-            artichokeruby/artichoke:ubuntu-nightly-${{ steps.latest.outputs.commit }}
-          build-args: |
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
-            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
-
-  debian-slim:
-    name: Debian Slim
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Clone Artichoke
-        uses: actions/checkout@v3
-        with:
-          repository: artichoke/artichoke
-          path: artichoke
-
-      - name: Set Artichoke latest commit
-        id: latest
-        working-directory: artichoke
-        run: |
-          echo "Artichoke git ref: $(git rev-parse HEAD)"
-          echo "::set-output name=commit::$(git rev-parse HEAD)"
-
-      - name: Set Artichoke Rust toolchain version
-        id: rust_toolchain
-        working-directory: artichoke
-        run: |
-          echo "Rust toolchain version: $(cat rust-toolchain)"
-          echo "::set-output name=version::$(cat rust-toolchain)"
-
-      - name: Install cargo-about
-        run: |
-          release_url="$(curl \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/EmbarkStudios/cargo-about/releases | \
-            jq -r '.[0].assets | map(select(.browser_download_url | test(".*x86_64-unknown-linux.*tar.gz$"))) | .[0].browser_download_url')"
-
-          curl -sL "$release_url" | sudo tar xvz -C /usr/local/bin/ --strip-components=1
-
-      - name: Setup .ruby-version override
-        run: cp artichoke/.ruby-version .ruby-version
-
-      - name: Install Ruby toolchain
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ".ruby-version"
-          bundler-cache: true
-
-      - name: Install RubyGems
-        run: bundle install
-        working-directory: "artichoke"
-
-      - name: Generate THIRDPARTY
-        run: bundle exec generate-third-party-text-file-single-target x86_64-unknown-linux-gnu > ../THIRDPARTY
-        working-directory: "artichoke"
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        if: ${{ github.ref == 'refs/heads/trunk' }}
-        with:
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: debian/bullseye/slim/Dockerfile
-          push: ${{ github.ref == 'refs/heads/trunk' }}
-          tags: |
-            artichokeruby/artichoke:slim-nightly
-            artichokeruby/artichoke:slim-bullseye-nightly
-            artichokeruby/artichoke:slim-nightly-${{ steps.latest.outputs.commit }}
-          build-args: |
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
-            RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
-
-  alpine:
-    name: Alpine
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Clone Artichoke
-        uses: actions/checkout@v3
-        with:
-          repository: artichoke/artichoke
-          path: artichoke
-
-      - name: Set Artichoke latest commit
-        id: latest
-        working-directory: artichoke
-        run: |
-          echo "Artichoke git ref: $(git rev-parse HEAD)"
-          echo "::set-output name=commit::$(git rev-parse HEAD)"
-
-      - name: Set Artichoke Rust toolchain version
-        id: rust_toolchain
-        working-directory: artichoke
-        run: |
-          echo "Rust toolchain version: $(cat rust-toolchain)"
-          echo "::set-output name=version::$(cat rust-toolchain)"
-
-      - name: Install cargo-about
-        run: |
-          release_url="$(curl \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/EmbarkStudios/cargo-about/releases | \
-            jq -r '.[0].assets | map(select(.browser_download_url | test(".*x86_64-unknown-linux.*tar.gz$"))) | .[0].browser_download_url')"
-
-          curl -sL "$release_url" | sudo tar xvz -C /usr/local/bin/ --strip-components=1
-
-      - name: Setup .ruby-version override
-        run: cp artichoke/.ruby-version .ruby-version
-
-      - name: Install Ruby toolchain
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ".ruby-version"
-          bundler-cache: true
-
-      - name: Install RubyGems
-        run: bundle install
-        working-directory: "artichoke"
-
-      - name: Generate THIRDPARTY
-        run: bundle exec generate-third-party-text-file-single-target x86_64-unknown-linux-musl > ../THIRDPARTY
-        working-directory: "artichoke"
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        if: ${{ github.ref == 'refs/heads/trunk' }}
-        with:
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: alpine/Dockerfile
-          push: ${{ github.ref == 'refs/heads/trunk' }}
-          tags: |
-            artichokeruby/artichoke:alpine-nightly
-            artichokeruby/artichoke:alpine3-nightly
-            artichokeruby/artichoke:alpine-nightly-${{ steps.latest.outputs.commit }}
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
