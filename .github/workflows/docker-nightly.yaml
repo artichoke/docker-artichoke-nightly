@@ -80,7 +80,7 @@ jobs:
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
-        if: ${{ github.ref == 'refs/heads/trunk' }}
+        if: github.ref == 'refs/heads/trunk'
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -103,7 +103,7 @@ jobs:
 
       - name: Build and push Docker images (Ubuntu extra tags)
         uses: docker/build-push-action@v3
-        if: ${{ matrix.build }} == 'ubuntu'
+        if: matrix.build == 'ubuntu'
         with:
           context: .
           file: ${{ matrix.dockerfile }}
