@@ -68,6 +68,7 @@ jobs:
           artichoke_ref: ${{ steps.latest.outputs.commit }}
           target_triple: ${{ matrix.target_triple }}
           output_file: ${{ github.workspace }}/THIRDPARTY
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
