@@ -52,10 +52,16 @@ RUN set -eux; \
 ARG ARTICHOKE_NIGHTLY_VER=latest
 # Install artichoke
 RUN set -eux; \
+    dpkgArch="$(dpkg --print-architecture)"; \
+    case "${dpkgArch##*-}" in \
+        amd64) artichokeArch='x86_64-unknown-linux-gnu' ;; \
+        arm64) artichokeArch='aarch64-unknown-linux-gnu' ;; \
+        *) echo >&2 "unsupported architecture: ${dpkgArch}"; exit 1 ;; \
+    esac; \
     if [ "$ARTICHOKE_NIGHTLY_VER" = "latest" ]; then \
-      RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --branch trunk --locked artichoke; \
+      RUSTFLAGS="-C link-arg=-s" cargo install --target "$artichokeArch" --git https://github.com/artichoke/artichoke --branch trunk --locked artichoke; \
     else \
-      RUSTFLAGS="-C link-arg=-s" cargo install --git https://github.com/artichoke/artichoke --rev "$ARTICHOKE_NIGHTLY_VER" --locked artichoke; \
+      RUSTFLAGS="-C link-arg=-s" cargo install --target "$artichokeArch" --git https://github.com/artichoke/artichoke --rev "$ARTICHOKE_NIGHTLY_VER" --locked artichoke; \
     fi; \
     airb --version; \
     artichoke --version; \
