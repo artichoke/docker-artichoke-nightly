@@ -59,14 +59,14 @@ RUN set -eux; \
         *) echo >&2 "unsupported architecture: ${dpkgArch}"; exit 1 ;; \
     esac; \
     if [ "$ARTICHOKE_NIGHTLY_VER" = "latest" ]; then \
-      RUSTFLAGS="-C link-arg=-s" cargo install \
+      cargo install \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
         --branch trunk \
         --locked \
         artichoke; \
     else \
-      RUSTFLAGS="-C link-arg=-s"  cargo install \
+      cargo install \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
         --rev "$ARTICHOKE_NIGHTLY_VER" \
