@@ -40,7 +40,8 @@ RUN set -eux; \
 
 # Add libmusl support for Alpine
 RUN set -eux; \
-    rustup target add x86_64-unknown-linux-musl
+    rustup target add x86_64-unknown-linux-musl; \
+    rustup target add aarch64-unknown-linux-musl;
 
 # Install bindgen
 ARG BINDGEN_VERSION=0.60.1
