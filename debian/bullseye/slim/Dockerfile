@@ -38,8 +38,9 @@ RUN set -eux; \
     rustc --version;
 
 # Install bindgen
+ARG BINDGEN_VERSION=0.60.1
 RUN set -eux; \
-    cargo install --version 0.59.1 bindgen; \
+    cargo install --version $BINDGEN_VERSION bindgen; \
     bindgen --version
 
 # The `ARTICHOKE_NIGHTLY_VER` build arg allows building a specific revision of
