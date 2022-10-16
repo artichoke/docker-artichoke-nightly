@@ -40,6 +40,7 @@ RUN set -eux; \
 # Install bindgen
 ARG BINDGEN_VERSION=0.60.1
 RUN set -eux; \
+    rustup component add rustfmt; \
     cargo install --version $BINDGEN_VERSION bindgen; \
     bindgen --version
 
