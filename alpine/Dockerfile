@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS build
+FROM --platform=$BUILDPLATFORM ubuntu:20.04 AS build
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -62,6 +62,10 @@ RUN set -eux; \
     cargo install --version $BINDGEN_VERSION bindgen; \
     bindgen --version
 
+ARG TARGETPLATFORM
+ARG TARGETARCH
+ARG TARGETVARIANT
+
 # The `ARTICHOKE_NIGHTLY_VER` build arg allows building a specific revision of
 # Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
 # SHA in the upstream Artichoke repository.
@@ -71,8 +75,7 @@ RUN set -eux; \
 ARG ARTICHOKE_NIGHTLY_VER=latest
 # Install artichoke
 RUN set -eux; \
-    dpkgArch="$(dpkg --print-architecture)"; \
-    case "${dpkgArch##*-}" in \
+    case "${TARGETARCH}" in \
         amd64) artichokeArch='x86_64-unknown-linux-musl' ;; \
         arm64) artichokeArch='aarch64-unknown-linux-musl' ;; \
         *) echo >&2 "unsupported architecture: ${dpkgArch}"; exit 1 ;; \
