@@ -42,12 +42,20 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-# Add multi-platform GNU target support
+# Add multi-platform GNU target support.
 RUN set -eux; \
     rustup target add x86_64-unknown-linux-gnu; \
     rustup target add aarch64-unknown-linux-gnu;
+
+# Cargo does not set the correct linker by default when acting as a cross
+# compiler. Tell cargo to use the aarch64 GCC toolchain's linker.
+#
+# https://github.com/rust-lang/rust/issues/28924
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
 
+# This option tells Cargo to use the `git` binary instead of `libgit2` for git
+# operations, which is significantly faster.
+#
 # https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
 ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 

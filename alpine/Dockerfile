@@ -39,7 +39,7 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-# Add multi-platform musl target support
+# Add multi-platform musl target support.
 RUN set -eux; \
     rustup target add x86_64-unknown-linux-musl; \
     rustup target add aarch64-unknown-linux-musl;
@@ -52,6 +52,9 @@ ENV CC_aarch64_unknown_linux_musl=clang
 ENV AR_aarch64_unknown_linux_musl=llvm-ar
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-Clink-self-contained=yes -Clinker=rust-lld"
 
+# This option tells Cargo to use the `git` binary instead of `libgit2` for git
+# operations, which is significantly faster.
+#
 # https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
 ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 
