@@ -4,9 +4,11 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     binutils-aarch64-linux-gnu \
+    binutils-x86-64-linux-gnu \
     ca-certificates \
     clang \
     gcc-aarch64-linux-gnu \
+    gcc-x86-64-linux-gnu \
     git \
     libclang-dev \
     wget \
@@ -39,6 +41,10 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
+# Add multi-platform GNU target support
+RUN set -eux; \
+    rustup target add x86_64-unknown-linux-gnu; \
+    rustup target add aarch64-unknown-linux-gnu;
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
 
 # https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli

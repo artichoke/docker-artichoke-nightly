@@ -39,7 +39,7 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-# Add libmusl support for Alpine
+# Add multi-platform musl target support
 RUN set -eux; \
     rustup target add x86_64-unknown-linux-musl; \
     rustup target add aarch64-unknown-linux-musl;
