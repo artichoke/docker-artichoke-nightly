@@ -73,7 +73,7 @@ RUN set -eux; \
     case "${TARGETARCH}" in \
         amd64) artichokeArch='x86_64-unknown-linux-gnu' ;; \
         arm64) artichokeArch='aarch64-unknown-linux-gnu'; export BINDGEN_EXTRA_CLANG_ARGS='--sysroot=/usr/aarch64-linux-gnu' ;; \
-        *) echo >&2 "unsupported architecture: ${dpkgArch}"; exit 1 ;; \
+        *) echo >&2 "unsupported architecture: ${TARGETARCH}"; exit 1 ;; \
     esac; \
     if [ "$ARTICHOKE_NIGHTLY_VER" = "latest" ]; then \
       cargo install \
