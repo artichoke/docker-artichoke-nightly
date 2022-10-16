@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc-aarch64-linux-gnu \
     gcc-x86-64-linux-gnu \
     git \
+    libc6-dev-arm64-cross \
     libclang-dev \
     wget \
     && rm -rf /var/lib/apt/lists/*

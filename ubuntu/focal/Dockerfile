@@ -10,6 +10,7 @@ RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no
     gcc-aarch64-linux-gnu \
     gcc-x86-64-linux-gnu \
     git \
+    libc6-dev-arm64-cross \
     libclang-dev \
     wget \
     && rm -rf /var/lib/apt/lists/*
