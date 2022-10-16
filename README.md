@@ -30,9 +30,13 @@ Currently supported docker platforms are:
 
 - `ubuntu` - canonical mainline Ubuntu 20.04 Focal Fossa image, tagged with
   `latest`, `ubuntu-nightly`, `ubuntu-focal-nightly`, and `ubuntu20.04-nightly`.
+  Ubuntu images are multi-arch images with `linux/amd64` and `linux/arm64`
+  support.
 - `debian-slim` - Debian 11 (Bullseye) slim image, tagged `slim-nightly` and
-  `slim-bullseye-nightly`.
+  `slim-bullseye-nightly`. Debian images are multi-arch images with
+  `linux/amd64` and `linux/arm64` support.
 - `alpine` - Alpine 3 image, tagged with `alpine-nightly` and `alpine3-nightly`.
+  Alpine images only have `linux/amd64` architecture support.
 
 #### Secrets
 
