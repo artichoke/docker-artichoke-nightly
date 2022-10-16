@@ -54,7 +54,7 @@ ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 ARG BINDGEN_VERSION=0.60.1
 RUN set -eux; \
     rustup component add rustfmt; \
-    cargo install --version $BINDGEN_VERSION bindgen; \
+    cargo install --version $BINDGEN_VERSION --locked bindgen; \
     bindgen --version
 
 ARG TARGETPLATFORM
