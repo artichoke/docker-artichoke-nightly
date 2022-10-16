@@ -52,6 +52,9 @@ ENV CC_aarch64_unknown_linux_musl=clang
 ENV AR_aarch64_unknown_linux_musl=llvm-ar
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-Clink-self-contained=yes -Clinker=rust-lld"
 
+# https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+
 # Install bindgen
 ARG BINDGEN_VERSION=0.60.1
 RUN set -eux; \

@@ -37,6 +37,9 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
+# https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+
 # Install bindgen
 ARG BINDGEN_VERSION=0.60.1
 RUN set -eux; \
