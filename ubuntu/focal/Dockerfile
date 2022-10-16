@@ -90,8 +90,6 @@ RUN set -eux; \
         --locked \
         artichoke; \
     fi; \
-    airb --version; \
-    artichoke --version; \
     mkdir /target; \
     touch /target/THIRDPARTY;
 
