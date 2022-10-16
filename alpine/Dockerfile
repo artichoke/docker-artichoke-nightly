@@ -7,6 +7,7 @@ RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no
     clang \
     git \
     libclang-dev \
+    llvm \
     musl-tools \
     wget \
     && rm -rf /var/lib/apt/lists/*
@@ -43,9 +44,19 @@ RUN set -eux; \
     rustup target add x86_64-unknown-linux-musl; \
     rustup target add aarch64-unknown-linux-musl;
 
+# To get a cross compiler for aarch64-unknown-linux-musl, use clang and override
+# the `cc` crate's compiler detection, which defaults to `aarch64-linux-musl-gcc`.
+#
+# https://github.com/briansmith/ring/issues/1414#issuecomment-1055177218
+ENV CC_aarch64_unknown_linux_musl=clang
+ENV AR_aarch64_unknown_linux_musl=llvm-ar
+ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-Clink-self-contained=yes -Clinker=rust-lld"
+
 # Install bindgen
 ARG BINDGEN_VERSION=0.60.1
 RUN set -eux; \
+    rustup component add --target x86_64-unknown-linux-musl rustfmt; \
+    rustup component add --target aarch64-unknown-linux-musl rustfmt; \
     cargo install --version $BINDGEN_VERSION bindgen; \
     bindgen --version
 
