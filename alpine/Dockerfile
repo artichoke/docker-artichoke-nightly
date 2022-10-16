@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS build
+FROM --platform=$BUILDPLATFORM ubuntu:20.04 AS build
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -7,6 +7,7 @@ RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no
     clang \
     git \
     libclang-dev \
+    llvm \
     musl-tools \
     wget \
     && rm -rf /var/lib/apt/lists/*
@@ -38,15 +39,35 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-# Add libmusl support for Alpine
+# Add multi-platform musl target support.
 RUN set -eux; \
-    rustup target add x86_64-unknown-linux-musl
+    rustup target add x86_64-unknown-linux-musl; \
+    rustup target add aarch64-unknown-linux-musl;
+
+# To get a cross compiler for aarch64-unknown-linux-musl, use clang and override
+# the `cc` crate's compiler detection, which defaults to `aarch64-linux-musl-gcc`.
+#
+# https://github.com/briansmith/ring/issues/1414#issuecomment-1055177218
+ENV CC_aarch64_unknown_linux_musl=clang
+ENV AR_aarch64_unknown_linux_musl=llvm-ar
+ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-Clink-self-contained=yes -Clinker=rust-lld"
+
+# This option tells Cargo to use the `git` binary instead of `libgit2` for git
+# operations, which is significantly faster.
+#
+# https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 
 # Install bindgen
 ARG BINDGEN_VERSION=0.60.1
 RUN set -eux; \
-    cargo install --version $BINDGEN_VERSION bindgen; \
+    rustup component add rustfmt; \
+    cargo install --version $BINDGEN_VERSION --locked bindgen; \
     bindgen --version
+
+ARG TARGETPLATFORM
+ARG TARGETARCH
+ARG TARGETVARIANT
 
 # The `ARTICHOKE_NIGHTLY_VER` build arg allows building a specific revision of
 # Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
@@ -57,13 +78,26 @@ RUN set -eux; \
 ARG ARTICHOKE_NIGHTLY_VER=latest
 # Install artichoke
 RUN set -eux; \
+    case "${TARGETARCH}" in \
+        amd64) artichokeArch='x86_64-unknown-linux-musl' ;; \
+        arm64) artichokeArch='aarch64-unknown-linux-musl' ;; \
+        *) echo >&2 "unsupported architecture: ${TARGETARCH}"; exit 1 ;; \
+    esac; \
     if [ "$ARTICHOKE_NIGHTLY_VER" = "latest" ]; then \
-      RUSTFLAGS="-C link-arg=-s" cargo install --target x86_64-unknown-linux-musl --git https://github.com/artichoke/artichoke --branch trunk --locked artichoke; \
+      cargo install \
+        --target "$artichokeArch" \
+        --git https://github.com/artichoke/artichoke \
+        --branch trunk \
+        --locked \
+        artichoke; \
     else \
-      RUSTFLAGS="-C link-arg=-s" cargo install --target x86_64-unknown-linux-musl --git https://github.com/artichoke/artichoke --rev "$ARTICHOKE_NIGHTLY_VER" --locked artichoke; \
+      cargo install \
+        --target "$artichokeArch" \
+        --git https://github.com/artichoke/artichoke \
+        --rev "$ARTICHOKE_NIGHTLY_VER" \
+        --locked \
+        artichoke; \
     fi; \
-    airb --version; \
-    artichoke --version; \
     mkdir /target; \
     touch /target/THIRDPARTY;
 

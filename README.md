@@ -30,9 +30,13 @@ Currently supported docker platforms are:
 
 - `ubuntu` - canonical mainline Ubuntu 20.04 Focal Fossa image, tagged with
   `latest`, `ubuntu-nightly`, `ubuntu-focal-nightly`, and `ubuntu20.04-nightly`.
+  Ubuntu images are multi-arch images with `linux/amd64` and `linux/arm64`
+  support.
 - `debian-slim` - Debian 11 (Bullseye) slim image, tagged `slim-nightly` and
-  `slim-bullseye-nightly`.
+  `slim-bullseye-nightly`. Debian images are multi-arch images with
+  `linux/amd64` and `linux/arm64` support.
 - `alpine` - Alpine 3 image, tagged with `alpine-nightly` and `alpine3-nightly`.
+  Alpine images only have `linux/amd64` architecture support.
 
 #### Secrets
 
@@ -47,6 +51,7 @@ Currently supported docker platforms are:
 - `ARTICHOKE_NIGHTLY_VER` - Argument used for cache invalidation (see
   `Dockerfile`), defaults to SHA of latest trunk commit in upstream Artichoke
   repository.
+- `BINDGEN_VERSION` - Rust bindgen version.
 
 [artichoke-repo]: https://github.com/artichoke/artichoke
 [docker-hub]: https://hub.docker.com/r/artichokeruby/artichoke
