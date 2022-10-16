@@ -25,16 +25,19 @@ jobs:
           - build: alpine
             target_triple: x86_64-unknown-linux-musl
             dockerfile: alpine/Dockerfile
+            docker_target_platforms: linux/amd64
             tag_bare: alpine
             tag_version: alpine3
           - build: debian
             target_triple: x86_64-unknown-linux-gnu
             dockerfile: debian/bullseye/slim/Dockerfile
+            docker_target_platforms: linux/amd64,linux/arm64
             tag_bare: slim
             tag_version: slim-bullseye
           - build: ubuntu
             target_triple: x86_64-unknown-linux-gnu
             dockerfile: ubuntu/focal/Dockerfile
+            docker_target_platforms: linux/amd64,linux/arm64
             tag_bare: ubuntu
             tag_version: ubuntu-focal
 
@@ -86,7 +89,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.docker_target_platforms }}
           file: ${{ matrix.dockerfile }}
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
@@ -104,7 +107,7 @@ jobs:
         if: matrix.build == 'ubuntu'
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.docker_target_platforms }}
           file: ${{ matrix.dockerfile }}
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
