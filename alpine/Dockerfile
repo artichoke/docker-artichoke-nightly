@@ -59,10 +59,11 @@ ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-Clink-self-contained=yes
 ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 
 # Install bindgen
-ARG BINDGEN_VERSION=0.60.1
+ARG BINDGEN_PACKAGE=bindgen-cli
+ARG BINDGEN_VERSION=0.61.0
 RUN set -eux; \
     rustup component add rustfmt; \
-    cargo install --version $BINDGEN_VERSION --locked bindgen; \
+    cargo install --version $BINDGEN_VERSION --locked $BINDGEN_PACKAGE; \
     bindgen --version
 
 ARG TARGETPLATFORM
