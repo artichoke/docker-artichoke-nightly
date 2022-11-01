@@ -65,7 +65,7 @@ jobs:
           echo "version=$(cat rust-toolchain)" >> $GITHUB_OUTPUT
 
       - name: Generate THIRDPARTY license listing
-        uses: artichoke/generate_third_party@v1.2.0
+        uses: artichoke/generate_third_party@v1.3.0
         with:
           artichoke_ref: ${{ steps.latest.outputs.commit }}
           target_triple: ${{ matrix.target_triple }}
