@@ -55,14 +55,14 @@ jobs:
         working-directory: artichoke
         run: |
           echo "Artichoke git ref: $(git rev-parse HEAD)"
-          echo "::set-output name=commit::$(git rev-parse HEAD)"
+          echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Set Artichoke Rust toolchain version
         id: rust_toolchain
         working-directory: artichoke
         run: |
           echo "Rust toolchain version: $(cat rust-toolchain)"
-          echo "::set-output name=version::$(cat rust-toolchain)"
+          echo "version=$(cat rust-toolchain)" >> $GITHUB_OUTPUT
 
       - name: Generate THIRDPARTY license listing
         uses: artichoke/generate_third_party@v1.2.0
