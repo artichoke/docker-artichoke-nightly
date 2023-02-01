@@ -86,7 +86,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker images
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           platforms: ${{ matrix.docker_target_platforms }}
@@ -103,7 +103,7 @@ jobs:
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
 
       - name: Build and push Docker images (Ubuntu extra tags)
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         if: matrix.build == 'ubuntu'
         with:
           context: .
