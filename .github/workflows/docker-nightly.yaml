@@ -94,10 +94,8 @@ jobs:
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
             artichokeruby/artichoke:latest
-            artichokeruby/artichoke:${{ steps.latest.outputs.commit }}
             artichokeruby/artichoke:${{ matrix.tag_bare }}-nightly
             artichokeruby/artichoke:${{ matrix.tag_version }}-nightly
-            artichokeruby/artichoke:${{ matrix.tag_bare }}-nightly-${{ steps.latest.outputs.commit }}
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
@@ -112,7 +110,6 @@ jobs:
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
             artichokeruby/artichoke:latest
-            artichokeruby/artichoke:${{ steps.latest.outputs.commit }}
             artichokeruby/artichoke:ubuntu20.04-nightly
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
