@@ -36,10 +36,10 @@ jobs:
             tag_version: slim-bullseye
           - build: ubuntu
             target_triple: x86_64-unknown-linux-gnu
-            dockerfile: ubuntu/focal/Dockerfile
+            dockerfile: ubuntu/jammy/Dockerfile
             docker_target_platforms: linux/amd64,linux/arm64
             tag_bare: ubuntu
-            tag_version: ubuntu-focal
+            tag_version: ubuntu-jammy
 
     steps:
       - uses: actions/checkout@v3
@@ -109,7 +109,7 @@ jobs:
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
             artichokeruby/artichoke:latest
-            artichokeruby/artichoke:ubuntu20.04-nightly
+            artichokeruby/artichoke:ubuntu22.04-nightly
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}

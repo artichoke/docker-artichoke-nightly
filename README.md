@@ -28,8 +28,8 @@ For the workflow to work 2 secrets need to be setup in repository settings:
 
 Currently supported docker platforms are:
 
-- `ubuntu` - canonical mainline Ubuntu 20.04 Focal Fossa image, tagged with
-  `latest`, `ubuntu-nightly`, `ubuntu-focal-nightly`, and `ubuntu20.04-nightly`.
+- `ubuntu` - canonical mainline Ubuntu 22.04 Jammy Jellyfish image, tagged with
+  `latest`, `ubuntu-nightly`, `ubuntu-jammy-nightly`, and `ubuntu22.04-nightly`.
   Ubuntu images are multi-arch images with `linux/amd64` and `linux/arm64`
   support.
 - `debian-slim` - Debian 11 (Bullseye) slim image, tagged `slim-nightly` and
