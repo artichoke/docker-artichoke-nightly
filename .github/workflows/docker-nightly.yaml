@@ -93,7 +93,6 @@ jobs:
           file: ${{ matrix.dockerfile }}
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
-            artichokeruby/artichoke:latest
             artichokeruby/artichoke:${{ matrix.tag_bare }}-nightly
             artichokeruby/artichoke:${{ matrix.tag_version }}-nightly
           build-args: |
