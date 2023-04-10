@@ -26,7 +26,7 @@ jobs:
           - build: debian
             dockerfile: debian/bullseye/slim/Dockerfile
           - build: ubuntu
-            dockerfile: ubuntu/focal/Dockerfile
+            dockerfile: ubuntu/jammy/Dockerfile
 
     steps:
       - uses: actions/checkout@v3
@@ -52,7 +52,7 @@ jobs:
         uses: docker://hadolint/hadolint:latest
         with:
           entrypoint: /bin/hadolint
-          args: --config /github/workspace/.hadolint.yaml /github/workspace/ubuntu/focal/Dockerfile
+          args: --config /github/workspace/.hadolint.yaml /github/workspace/ubuntu/jammy/Dockerfile
 
       - name: Lint Debian Slim Dockerfile
         uses: docker://hadolint/hadolint:latest

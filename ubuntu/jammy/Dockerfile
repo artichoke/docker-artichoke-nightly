@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM ubuntu:20.04 AS build
+FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS build
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -108,7 +108,7 @@ RUN set -eux; \
 COPY empty.txt THIRDPART[Y] /target/
 
 # Setup runtime
-FROM ubuntu:20.04 AS runtime
+FROM ubuntu:22.04 AS runtime
 
 LABEL org.opencontainers.image.authors="Artem Yakimenko <http://temikus.net>, Ryan Lopopolo <rjl@hyperbo.la>"
 LABEL org.opencontainers.image.url="https://github.com/artichoke/docker-artichoke-nightly"
