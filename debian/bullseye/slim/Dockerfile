@@ -58,6 +58,11 @@ ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
 #
 # https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
 ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+# This option tells Cargo to use the HTTP-based `sparse` protocol for accessing
+# crates.io, which only downloads the necessary parts of the index and is faster.
+#
+# https://doc.rust-lang.org/cargo/reference/config.html#registriescrates-ioprotocol
+ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
 # Install bindgen
 ARG BINDGEN_PACKAGE=bindgen-cli
