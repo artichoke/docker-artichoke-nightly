@@ -68,7 +68,7 @@ ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
 # Install bindgen
 ARG BINDGEN_PACKAGE=bindgen-cli
-ARG BINDGEN_VERSION=0.64.0
+ARG BINDGEN_VERSION=0.65.1
 RUN set -eux; \
     rustup component add rustfmt; \
     cargo install --version $BINDGEN_VERSION --locked $BINDGEN_PACKAGE; \
