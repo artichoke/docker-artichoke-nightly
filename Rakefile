@@ -55,7 +55,7 @@ namespace :release do
   end
 end
 
-RUST_VERSION = '1.68.2'
+RUST_VERSION = '1.69.0'
 
 namespace :toolchain do
   desc 'Sync Rust toolchain to all sources'
