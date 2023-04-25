@@ -64,14 +64,6 @@ ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 # https://doc.rust-lang.org/cargo/reference/config.html#registriescrates-ioprotocol
 ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
-# Install bindgen
-ARG BINDGEN_PACKAGE=bindgen-cli
-ARG BINDGEN_VERSION=0.65.1
-RUN set -eux; \
-    rustup component add rustfmt; \
-    cargo install --version $BINDGEN_VERSION --locked $BINDGEN_PACKAGE; \
-    bindgen --version
-
 ARG TARGETPLATFORM
 ARG TARGETARCH
 ARG TARGETVARIANT
@@ -87,7 +79,7 @@ ARG ARTICHOKE_NIGHTLY_VER=latest
 RUN set -eux; \
     case "${TARGETARCH}" in \
         amd64) artichokeArch='x86_64-unknown-linux-gnu' ;; \
-        arm64) artichokeArch='aarch64-unknown-linux-gnu'; export BINDGEN_EXTRA_CLANG_ARGS='--sysroot=/usr/aarch64-linux-gnu' ;; \
+        arm64) artichokeArch='aarch64-unknown-linux-gnu' ;; \
         *) echo >&2 "unsupported architecture: ${TARGETARCH}"; exit 1 ;; \
     esac; \
     if [ "$ARTICHOKE_NIGHTLY_VER" = "latest" ]; then \

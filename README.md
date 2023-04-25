@@ -51,8 +51,6 @@ Currently supported docker platforms are:
 - `ARTICHOKE_NIGHTLY_VER` - Argument used for cache invalidation (see
   `Dockerfile`), defaults to SHA of latest trunk commit in upstream Artichoke
   repository.
-- `BINDGEN_PACKAGE` - Rust bindgen package (for cargo install).
-- `BINDGEN_VERSION` - Rust bindgen version.
 
 [artichoke-repo]: https://github.com/artichoke/artichoke
 [docker-hub]: https://hub.docker.com/r/artichokeruby/artichoke

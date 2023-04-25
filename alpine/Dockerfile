@@ -63,14 +63,6 @@ ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 # https://doc.rust-lang.org/cargo/reference/config.html#registriescrates-ioprotocol
 ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
-# Install bindgen
-ARG BINDGEN_PACKAGE=bindgen-cli
-ARG BINDGEN_VERSION=0.65.1
-RUN set -eux; \
-    rustup component add rustfmt; \
-    cargo install --version $BINDGEN_VERSION --locked $BINDGEN_PACKAGE; \
-    bindgen --version
-
 ARG TARGETPLATFORM
 ARG TARGETARCH
 ARG TARGETVARIANT
