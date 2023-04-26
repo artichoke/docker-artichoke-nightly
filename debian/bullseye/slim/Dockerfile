@@ -68,6 +68,8 @@ ARG TARGETPLATFORM
 ARG TARGETARCH
 ARG TARGETVARIANT
 
+ENV BINDGEN_EXTRA_CLANG_ARGS_aarch64-unknown-linux-gnu=--sysroot=/usr/aarch64-linux-gnu
+
 # The `ARTICHOKE_NIGHTLY_VER` build arg allows building a specific revision of
 # Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
 # SHA in the upstream Artichoke repository.
