@@ -57,12 +57,25 @@ jobs:
           echo "Artichoke git ref: $(git rev-parse HEAD)"
           echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Setup Python
+        uses: actions/setup-python@v4.6.1
+        with:
+          python-version: "3.11"
+
       - name: Set Artichoke Rust toolchain version
         id: rust_toolchain
         working-directory: artichoke
+        shell: python
         run: |
-          echo "Rust toolchain version: $(cat rust-toolchain)"
-          echo "version=$(cat rust-toolchain)" >> $GITHUB_OUTPUT
+          import os
+          import tomllib
+
+          with open("rust-toolchain.toml", "rb") as f:
+              data = tomllib.load(f)
+          toolchain = data["toolchain"]["channel"]
+          print(f"Rust toolchain version: {toolchain}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              print(f"version={toolchain}", file=f)
 
       - name: Generate THIRDPARTY license listing
         uses: artichoke/generate_third_party@v1.10.0
