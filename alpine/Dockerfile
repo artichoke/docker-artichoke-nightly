@@ -114,14 +114,21 @@ COPY ${THIRDPARTY_FILE} /target/THIRDPARTY
 # Runtime stage
 FROM alpine:3 AS runtime
 
+ARG ARTICHOKE_NIGHTLY_VER=latest
+
+LABEL org.opencontainers.image.created=$(date -u +"%Y-%m-%dT%H:%M:%S+00:00")
 LABEL org.opencontainers.image.authors="Artem Yakimenko <http://temikus.net>, Ryan Lopopolo <rjl@hyperbo.la>"
 LABEL org.opencontainers.image.url="https://github.com/artichoke/docker-artichoke-nightly"
+LABEL org.opencontainers.image.documentation="https://artichoke.github.io/artichoke/artichoke/"
 LABEL org.opencontainers.image.source="https://github.com/artichoke/artichoke"
-LABEL org.opencontainers.image.vendor="Artichoke Ruby <https://www.artichokeruby.org>"
+LABEL org.opencontainers.image.version="0.1.0-pre.1-nightly"
+LABEL org.opencontainers.image.revision=$ARTICHOKE_NIGHTLY_VER
+LABEL org.opencontainers.image.vendor="Artichoke Ruby"
 LABEL org.opencontainers.image.licenses="MIT"
-LABEL org.opencontainers.image.ref.name="nightly"
-LABEL org.opencontainers.image.title="Artichoke Ruby"
+LABEL org.opencontainers.image.ref.name="alpine3-nightly"
+LABEL org.opencontainers.image.title="Artichoke Ruby nightly"
 LABEL org.opencontainers.image.description="Distribution of artichoke CLI and airb REPL from Artichoke Ruby"
+LABEL org.opencontainers.image.base.name="docker.io/library/alpine:3"
 
 COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
