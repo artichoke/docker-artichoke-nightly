@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM ubuntu:20.04 AS build
+FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS build
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -7,7 +7,6 @@ RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no
     clang \
     git \
     libclang-dev \
-    llvm \
     musl-tools \
     wget \
     && rm -rf /var/lib/apt/lists/*
