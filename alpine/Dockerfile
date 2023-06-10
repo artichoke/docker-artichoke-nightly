@@ -1,7 +1,10 @@
+# Build stage
 FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS build
 
+# Set shell options
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# Install necessary build dependencies
 RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates \
     clang \
@@ -38,7 +41,7 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-# Add multi-platform musl target support.
+# Add multi-platform musl target support
 RUN set -eux; \
     rustup target add x86_64-unknown-linux-musl; \
     rustup target add aarch64-unknown-linux-musl;
@@ -98,9 +101,10 @@ RUN set -eux; \
     mkdir /target; \
     touch /target/THIRDPARTY;
 
+# Copy `THIRDPARTY` license manifest if it exists
 COPY empty.txt THIRDPART[Y] /target/
 
-# Setup runtime
+# Runtime stage
 FROM alpine:3 AS runtime
 
 LABEL org.opencontainers.image.authors="Artem Yakimenko <http://temikus.net>, Ryan Lopopolo <rjl@hyperbo.la>"
@@ -116,6 +120,7 @@ COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
 COPY --from=build /target/THIRDPARTY /opt/artichoke/THIRDPARTY
 
+# Use a non-root user
 RUN addgroup --system --gid 1888 artichoke && \
     adduser --system -G artichoke --uid 1888 artichoke
 USER artichoke
@@ -123,4 +128,5 @@ USER artichoke
 ENV ARTICHOKE_BIN /opt/artichoke/bin
 ENV PATH $ARTICHOKE_BIN:$PATH
 
+# Set the entry point command for the container to the REPL
 CMD [ "airb" ]
