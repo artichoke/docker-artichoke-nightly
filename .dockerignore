@@ -1,0 +1,53 @@
+# Ignore common editor and IDE files
+*~
+*.bak
+*.cache
+*.log
+*.swp
+.*.swp
+*.tmp
+*.temp
+.idea/
+.vscode/
+.DS_Store
+.editorconfig
+
+# Ignore source control files
+.git/
+.gitignore
+
+# Ignore build artifacts
+.ruff_cache/
+build/
+dist/
+node_modules/
+target/
+vendor/
+venv/
+
+# Ignore development and test files
+.env
+.env.*
+.dockerignore
+Dockerfile*
+docker-compose.yml*
+**/Dockerfile
+**/.dockerignore
+
+# Ignore documentation files
+doc/
+docs/
+*.md
+
+# Ignore specific directories and files in the root
+.github/
+.hadolint.yaml
+.prettierignore
+.prettierrc.yaml
+.rubocop.yml
+.ruby-version
+.yamllint.yaml
+Gemfile
+Gemfile.lock
+LICENSE
+Rakefile
