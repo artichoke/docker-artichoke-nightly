@@ -114,29 +114,28 @@ goals of the project are:
 
 ## Contributing
 
-Artichoke aspires to be a Ruby 2.6.3-compatible implementation of the Ruby
-programming language. [There is lots to do].
+Artichoke aspires to be an [MRI Ruby-compatible][mri-target] implementation of
+the Ruby programming language. [There is lots to do][github-issues].
 
 If Artichoke does not run Ruby source code in the same way that MRI does, it is
-a bug and we would appreciate if you [filed an issue so we can fix it].
+a bug and we would appreciate if you [filed an issue so we can fix
+it][file-an-issue].
 
 If you would like to contribute code 👩‍💻👨‍💻, find an issue that looks interesting
 and leave a comment that you're beginning to investigate. If there is no issue,
 please file one before beginning to work on a PR. [Good first issues are labeled
-`E-easy`].
+`E-easy`][e-easy].
 
-[there is lots to do]: https://github.com/artichoke/artichoke/issues
-[filed an issue so we can fix it]:
-  https://github.com/artichoke/artichoke/issues/new
-[good first issues are labeled `e-easy`]:
-  https://github.com/artichoke/artichoke/labels/E-easy
+[github-issues]: https://github.com/artichoke/artichoke/issues
+[file-an-issue]: https://github.com/artichoke/artichoke/issues/new
+[e-easy]: https://github.com/artichoke/artichoke/labels/E-easy
 
 ### Discussion
 
 If you'd like to engage in a discussion outside of GitHub, you can [join
-Artichoke's public Discord server].
+Artichoke's public Discord server][discord].
 
-[join artichoke's public discord server]: https://discord.gg/QCe2tp2
+[discord]: https://discord.gg/QCe2tp2
 
 ## License
 
