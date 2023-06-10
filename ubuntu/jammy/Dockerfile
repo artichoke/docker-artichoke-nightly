@@ -108,7 +108,14 @@ RUN set -eux; \
     touch /target/THIRDPARTY;
 
 # Copy `THIRDPARTY` license manifest if it exists
-COPY empty.txt THIRDPART[Y] /target/
+#
+# Define a build argument to specify the optional file path
+ARG THIRDPARTY_FILE
+# Check if the THIRDPARTY_FILE build argument is provided.
+#
+# If provided, copy the file from the host into the build stage image. If not
+# provided, the COPY instruction will be skipped
+COPY ${THIRDPARTY_FILE} /target/THIRDPARTY
 
 # Runtime stage
 FROM ubuntu:22.04 AS runtime

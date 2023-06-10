@@ -111,6 +111,7 @@ jobs:
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+            THIRDPARTY_FILE=THIRDPARTY
 
       - name: Build and push Docker images (Ubuntu extra tags)
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671 # v4.0.0
@@ -126,3 +127,4 @@ jobs:
           build-args: |
             ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
+            THIRDPARTY_FILE=THIRDPARTY
