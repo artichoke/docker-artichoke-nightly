@@ -1,7 +1,10 @@
+# Build stage
 FROM --platform=$BUILDPLATFORM debian:bullseye-slim AS build
 
+# Set shell options
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# Install necessary build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     binutils-aarch64-linux-gnu \
     binutils-x86-64-linux-gnu \
@@ -42,7 +45,7 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
-# Add multi-platform GNU target support.
+# Add multi-platform GNU target support
 RUN set -eux; \
     rustup target add x86_64-unknown-linux-gnu; \
     rustup target add aarch64-unknown-linux-gnu;
@@ -70,13 +73,13 @@ ARG TARGETVARIANT
 
 ENV BINDGEN_EXTRA_CLANG_ARGS_aarch64-unknown-linux-gnu=--sysroot=/usr/aarch64-linux-gnu
 
-# The `ARTICHOKE_NIGHTLY_VER` build arg allows building a specific revision of
-# Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
+# The `ARTICHOKE_NIGHTLY_REVISION` build arg allows building a specific revision
+# of Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
 # SHA in the upstream Artichoke repository.
 #
 # If this build arg is not set via the docker command line, the `trunk` branch
 # is built.
-ARG ARTICHOKE_NIGHTLY_VER=latest
+ARG ARTICHOKE_NIGHTLY_REVISION=latest
 # Install artichoke
 RUN set -eux; \
     case "${TARGETARCH}" in \
@@ -84,7 +87,7 @@ RUN set -eux; \
         arm64) artichokeArch='aarch64-unknown-linux-gnu' ;; \
         *) echo >&2 "unsupported architecture: ${TARGETARCH}"; exit 1 ;; \
     esac; \
-    if [ "$ARTICHOKE_NIGHTLY_VER" = "latest" ]; then \
+    if [ "$ARTICHOKE_NIGHTLY_REVISION" = "latest" ]; then \
       cargo install \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
@@ -95,36 +98,51 @@ RUN set -eux; \
       cargo install \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
-        --rev "$ARTICHOKE_NIGHTLY_VER" \
+        --rev "$ARTICHOKE_NIGHTLY_REVISION" \
         --locked \
         artichoke; \
     fi; \
     mkdir /target; \
     touch /target/THIRDPARTY;
 
-COPY empty.txt THIRDPART[Y] /target/
+# Copy `THIRDPARTY` license manifest if it exists
+#
+# If provided, copy the file from the host into the build stage image. If not
+# provided, the COPY instruction will be skipped
+COPY THIRDPART[Y] /target/THIRDPARTY
 
-# Setup runtime
+# Runtime stage
 FROM debian:bullseye-slim AS runtime
 
+ARG ARTICHOKE_NIGHTLY_VERSION=latest
+ARG ARTICHOKE_NIGHTLY_REVISION=latest
+ARG BUILD_TIMESTAMP=unknown
+
+LABEL org.opencontainers.image.created=$BUILD_TIMESTAMP
 LABEL org.opencontainers.image.authors="Artem Yakimenko <http://temikus.net>, Ryan Lopopolo <rjl@hyperbo.la>"
 LABEL org.opencontainers.image.url="https://github.com/artichoke/docker-artichoke-nightly"
+LABEL org.opencontainers.image.documentation="https://artichoke.github.io/artichoke/artichoke/"
 LABEL org.opencontainers.image.source="https://github.com/artichoke/artichoke"
-LABEL org.opencontainers.image.vendor="Artichoke Ruby <https://www.artichokeruby.org>"
+LABEL org.opencontainers.image.version=$ARTICHOKE_NIGHTLY_VERSION
+LABEL org.opencontainers.image.revision=$ARTICHOKE_NIGHTLY_REVISION
+LABEL org.opencontainers.image.vendor="Artichoke Ruby"
 LABEL org.opencontainers.image.licenses="MIT"
-LABEL org.opencontainers.image.ref.name="nightly"
-LABEL org.opencontainers.image.title="Artichoke Ruby"
+LABEL org.opencontainers.image.ref.name="slim-nightly"
+LABEL org.opencontainers.image.title="Artichoke Ruby nightly"
 LABEL org.opencontainers.image.description="Distribution of artichoke CLI and airb REPL from Artichoke Ruby"
+LABEL org.opencontainers.image.base.name="docker.io/library/debian:bullseye-slim"
 
 COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
 COPY --from=build /target/THIRDPARTY /opt/artichoke/THIRDPARTY
 
-RUN groupadd --system --gid 128142 artichoke && \
-    useradd --no-log-init --system --gid artichoke --uid 128142 artichoke
+# Use a non-root user
+RUN groupadd --system --gid 1888 artichoke && \
+    useradd --no-log-init --system --gid artichoke --uid 1888 artichoke
 USER artichoke
 
 ENV ARTICHOKE_BIN /opt/artichoke/bin
 ENV PATH $ARTICHOKE_BIN:$PATH
 
+# Set the entry point command for the container to the REPL
 CMD [ "airb" ]
