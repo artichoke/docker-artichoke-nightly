@@ -107,13 +107,9 @@ RUN set -eux; \
 
 # Copy `THIRDPARTY` license manifest if it exists
 #
-# Define a build argument to specify the optional file path
-ARG THIRDPARTY_FILE
-# Check if the THIRDPARTY_FILE build argument is provided.
-#
 # If provided, copy the file from the host into the build stage image. If not
 # provided, the COPY instruction will be skipped
-COPY ${THIRDPARTY_FILE} /target/THIRDPARTY
+COPY THIRDPART[Y] /target/THIRDPARTY
 
 # Runtime stage
 FROM debian:bullseye-slim AS runtime
