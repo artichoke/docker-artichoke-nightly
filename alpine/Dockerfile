@@ -116,8 +116,8 @@ COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
 COPY --from=build /target/THIRDPARTY /opt/artichoke/THIRDPARTY
 
-RUN addgroup --system --gid 128142 artichoke && \
-    adduser --system -G artichoke --uid 128142 artichoke
+RUN addgroup --system --gid 1888 artichoke && \
+    adduser --system -G artichoke --uid 1888 artichoke
 USER artichoke
 
 ENV ARTICHOKE_BIN /opt/artichoke/bin
