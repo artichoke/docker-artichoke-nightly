@@ -69,13 +69,13 @@ ARG TARGETPLATFORM
 ARG TARGETARCH
 ARG TARGETVARIANT
 
-# The `ARTICHOKE_NIGHTLY_VER` build arg allows building a specific revision of
-# Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
+# The `ARTICHOKE_NIGHTLY_REVISION` build arg allows building a specific revision
+# of Artichoke. The GitHub Actions workflow sets this to the latest trunk commit
 # SHA in the upstream Artichoke repository.
 #
 # If this build arg is not set via the docker command line, the `trunk` branch
 # is built.
-ARG ARTICHOKE_NIGHTLY_VER=latest
+ARG ARTICHOKE_NIGHTLY_REVISION=latest
 # Install artichoke
 RUN set -eux; \
     case "${TARGETARCH}" in \
@@ -83,7 +83,7 @@ RUN set -eux; \
         arm64) artichokeArch='aarch64-unknown-linux-musl' ;; \
         *) echo >&2 "unsupported architecture: ${TARGETARCH}"; exit 1 ;; \
     esac; \
-    if [ "$ARTICHOKE_NIGHTLY_VER" = "latest" ]; then \
+    if [ "$ARTICHOKE_NIGHTLY_REVISION" = "latest" ]; then \
       cargo install \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
@@ -94,7 +94,7 @@ RUN set -eux; \
       cargo install \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
-        --rev "$ARTICHOKE_NIGHTLY_VER" \
+        --rev "$ARTICHOKE_NIGHTLY_REVISION" \
         --locked \
         artichoke; \
     fi; \
@@ -114,15 +114,17 @@ COPY ${THIRDPARTY_FILE} /target/THIRDPARTY
 # Runtime stage
 FROM alpine:3 AS runtime
 
-ARG ARTICHOKE_NIGHTLY_VER=latest
+ARG ARTICHOKE_NIGHTLY_VERSION=latest
+ARG ARTICHOKE_NIGHTLY_REVISION=latest
+ARG BUILD_TIMESTAMP=unknown
 
-LABEL org.opencontainers.image.created=$(date -u +"%Y-%m-%dT%H:%M:%S+00:00")
+LABEL org.opencontainers.image.created=$BUILD_TIMESTAMP
 LABEL org.opencontainers.image.authors="Artem Yakimenko <http://temikus.net>, Ryan Lopopolo <rjl@hyperbo.la>"
 LABEL org.opencontainers.image.url="https://github.com/artichoke/docker-artichoke-nightly"
 LABEL org.opencontainers.image.documentation="https://artichoke.github.io/artichoke/artichoke/"
 LABEL org.opencontainers.image.source="https://github.com/artichoke/artichoke"
-LABEL org.opencontainers.image.version="0.1.0-pre.1-nightly"
-LABEL org.opencontainers.image.revision=$ARTICHOKE_NIGHTLY_VER
+LABEL org.opencontainers.image.version=$ARTICHOKE_NIGHTLY_VERSION
+LABEL org.opencontainers.image.revision=$ARTICHOKE_NIGHTLY_REVISION
 LABEL org.opencontainers.image.vendor="Artichoke Ruby"
 LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.ref.name="alpine3-nightly"

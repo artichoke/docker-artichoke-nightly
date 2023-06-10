@@ -77,6 +77,27 @@ jobs:
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
               print(f"version={toolchain}", file=f)
 
+      - name: Set labels
+        id: labels
+        working-directory: artichoke
+        shell: python
+        run: |
+          import datetime
+          import os
+          import tomllib
+
+          with open("Cargo.toml", "rb") as f:
+              data = tomllib.load(f)
+          version = data["package"]["version"]
+          version = f"{version}-nightly"
+          print(f"Artichoke version: {version}")
+
+          current_time = datetime.datetime.now(datetime.timezone.utc)
+          build_timestamp = current_time.isoformat()
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              print(f"artichoke_version={version}", file=f)
+              print(f"build_timestamp={build_timestamp}", file=f)
+
       - name: Generate THIRDPARTY license listing
         uses: artichoke/generate_third_party@v1.10.0
         with:
@@ -109,7 +130,9 @@ jobs:
             artichokeruby/artichoke:${{ matrix.tag_bare }}-nightly
             artichokeruby/artichoke:${{ matrix.tag_version }}-nightly
           build-args: |
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
+            ARTICHOKE_NIGHTLY_REVISION=${{ steps.latest.outputs.commit }}
+            ARTICHOKE_NIGHTLY_VERSION=${{ steps.labels.outputs.artichoke_version }}
+            BUILD_TIMESTAMP=${{ steps.labels.outputs.build_timestamp }}
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
             THIRDPARTY_FILE=THIRDPARTY
 
@@ -125,6 +148,8 @@ jobs:
             artichokeruby/artichoke:latest
             artichokeruby/artichoke:ubuntu22.04-nightly
           build-args: |
-            ARTICHOKE_NIGHTLY_VER=${{ steps.latest.outputs.commit }}
+            ARTICHOKE_NIGHTLY_REVISION=${{ steps.latest.outputs.commit }}
+            ARTICHOKE_NIGHTLY_VERSION=${{ steps.labels.outputs.artichoke_version }}
+            BUILD_TIMESTAMP=${{ steps.labels.outputs.build_timestamp }}
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
             THIRDPARTY_FILE=THIRDPARTY

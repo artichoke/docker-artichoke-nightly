@@ -9,6 +9,9 @@ Docker images for nightly builds of [Artichoke Ruby][artichoke-repo].
 
 Pull and run the [latest image from Docker Hub][docker-hub]:
 
+[artichoke-repo]: https://github.com/artichoke/artichoke
+[docker-hub]: https://hub.docker.com/r/artichokeruby/artichoke
+
 ```console
 $ docker run -it docker.io/artichokeruby/artichoke airb
 ```
@@ -20,11 +23,7 @@ For the workflow to work 2 secrets need to be setup in repository settings:
 - `secrets.DOCKERHUB_USER`
 - `secrets.DOCKERHUB_TOKEN`
 
-## Workflows
-
-### docker-nightly
-
-#### Platforms
+## Platforms
 
 Currently supported docker platforms are:
 
@@ -37,20 +36,3 @@ Currently supported docker platforms are:
   `linux/amd64` and `linux/arm64` support.
 - `alpine` - Alpine 3 image, tagged with `alpine-nightly` and `alpine3-nightly`.
   Alpine images only have `linux/amd64` architecture support.
-
-#### Secrets
-
-- `secrets.DOCKERHUB_USER` - DockerHub username that the workflow will use to
-  push the image
-- `secrets.DOCKERHUB_TOKEN` - DockerHub user token that the workflow will
-  authorise with
-
-#### Build Args
-
-- `RUST_VERSION` - Rust toolchain version.
-- `ARTICHOKE_NIGHTLY_VER` - Argument used for cache invalidation (see
-  `Dockerfile`), defaults to SHA of latest trunk commit in upstream Artichoke
-  repository.
-
-[artichoke-repo]: https://github.com/artichoke/artichoke
-[docker-hub]: https://hub.docker.com/r/artichokeruby/artichoke
