@@ -107,11 +107,11 @@ RUN set -eux; \
     mkdir /target; \
     touch /target/THIRDPARTY;
 
-# copy `thirdparty` license manifest if it exists
+# Copy `THIRDPARTY` license manifest if it exists
 #
-# if provided, copy the file from the host into the build stage image. if not
-# provided, the copy instruction will be skipped
-copy thirdpart[y] /target/thirdparty
+# If provided, copy the file from the host into the build stage image. If not
+# provided, the COPY instruction will be skipped
+COPY THIRDPART[Y] /target/THIRDPARTY
 
 # Runtime stage
 FROM ubuntu:22.04 AS runtime
