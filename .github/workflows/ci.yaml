@@ -29,7 +29,7 @@ jobs:
             dockerfile: ubuntu/jammy/Dockerfile
 
     steps:
-      - uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@4b4e9c3e2d4531116a6f8ba8e71fc6e2cb6e6c8c # v2.5.0
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
 
       - name: Lint Ubuntu Dockerfile
         uses: docker://hadolint/hadolint:latest
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
 
       - name: Install Ruby toolchain
         uses: ruby/setup-ruby@8a45918450651f5e4784b6031db26f4b9f76b251 # v1.150.0
@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
 
       - name: Format with prettier
         run: npx prettier --check '**/*'
