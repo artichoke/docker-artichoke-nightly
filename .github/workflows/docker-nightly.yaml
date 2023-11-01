@@ -42,10 +42,10 @@ jobs:
             tag_version: ubuntu-jammy
 
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
 
       - name: Clone Artichoke
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.1.1
         with:
           repository: artichoke/artichoke
           path: artichoke
@@ -58,7 +58,7 @@ jobs:
           echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Setup Python
-        uses: actions/setup-python@v4.7.0
+        uses: actions/setup-python@v4.7.1
         with:
           python-version: "3.11"
 
