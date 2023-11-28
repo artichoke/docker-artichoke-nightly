@@ -1,7 +1,7 @@
 # Artichoke Nightly Docker
 
 [![GitHub Actions](https://github.com/artichoke/docker-artichoke-nightly/workflows/CI/badge.svg)](https://github.com/artichoke/docker-artichoke-nightly/actions)
-[![Nightly Build](https://github.com/artichoke/docker-artichoke-nightly/workflows/Docker%20Image%20CI/badge.svg)](https://github.com/artichoke/docker-artichoke-nightly/actions)
+[![Nightly Build](https://github.com/artichoke/docker-artichoke-nightly/workflows/Docker%20Nightly%20Builder/badge.svg)](https://github.com/artichoke/docker-artichoke-nightly/actions)
 [![Discord](https://img.shields.io/discord/607683947496734760)](https://discord.gg/QCe2tp2)
 [![Twitter](https://img.shields.io/twitter/follow/artichokeruby?label=Follow&style=social)](https://twitter.com/artichokeruby)
 
