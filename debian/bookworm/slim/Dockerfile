@@ -5,7 +5,7 @@ FROM --platform=$BUILDPLATFORM debian:bookworm-slim AS build
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install necessary build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     binutils-aarch64-linux-gnu \
     binutils-x86-64-linux-gnu \
     ca-certificates \
