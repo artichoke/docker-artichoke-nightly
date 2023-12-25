@@ -139,8 +139,8 @@ COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
 COPY --from=build /target/THIRDPARTY /opt/artichoke/THIRDPARTY
 
 # Use a non-root user
-RUN groupadd --system --gid 1888 artichoke && \
-    useradd --no-log-init --system --gid artichoke --uid 1888 artichoke
+RUN groupadd --gid 1888 artichoke && \
+    useradd --no-log-init --gid artichoke --uid 1888 artichoke
 USER artichoke
 
 ENV ARTICHOKE_BIN /opt/artichoke/bin
