@@ -30,10 +30,10 @@ jobs:
             tag_version: alpine3
           - build: debian
             target_triple: x86_64-unknown-linux-gnu
-            dockerfile: debian/bullseye/slim/Dockerfile
+            dockerfile: debian/bookworm/slim/Dockerfile
             docker_target_platforms: linux/amd64,linux/arm64
             tag_bare: slim
-            tag_version: slim-bullseye
+            tag_version: slim-bookworm
           - build: ubuntu
             target_triple: x86_64-unknown-linux-gnu
             dockerfile: ubuntu/jammy/Dockerfile

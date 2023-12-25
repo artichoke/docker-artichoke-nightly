@@ -1,11 +1,11 @@
 # Build stage
-FROM --platform=$BUILDPLATFORM debian:bullseye-slim AS build
+FROM --platform=$BUILDPLATFORM debian:bookworm-slim AS build
 
 # Set shell options
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install necessary build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     binutils-aarch64-linux-gnu \
     binutils-x86-64-linux-gnu \
     ca-certificates \
@@ -112,7 +112,7 @@ RUN set -eux; \
 COPY THIRDPART[Y] /target/THIRDPARTY
 
 # Runtime stage
-FROM debian:bullseye-slim AS runtime
+FROM debian:bookworm-slim AS runtime
 
 ARG ARTICHOKE_NIGHTLY_VERSION=latest
 ARG ARTICHOKE_NIGHTLY_REVISION=latest
@@ -130,15 +130,15 @@ LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.ref.name="slim-nightly"
 LABEL org.opencontainers.image.title="Artichoke Ruby nightly"
 LABEL org.opencontainers.image.description="Distribution of artichoke CLI and airb REPL from Artichoke Ruby"
-LABEL org.opencontainers.image.base.name="docker.io/library/debian:bullseye-slim"
+LABEL org.opencontainers.image.base.name="docker.io/library/debian:bookworm-slim"
 
 COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
 COPY --from=build /target/THIRDPARTY /opt/artichoke/THIRDPARTY
 
 # Use a non-root user
-RUN groupadd --system --gid 1888 artichoke && \
-    useradd --no-log-init --system --gid artichoke --uid 1888 artichoke
+RUN groupadd --gid 1888 artichoke && \
+    useradd --no-log-init --gid artichoke --uid 1888 artichoke
 USER artichoke
 
 ENV ARTICHOKE_BIN /opt/artichoke/bin

@@ -24,7 +24,7 @@ jobs:
           - build: alpine
             dockerfile: alpine/Dockerfile
           - build: debian
-            dockerfile: debian/bullseye/slim/Dockerfile
+            dockerfile: debian/bookworm/slim/Dockerfile
           - build: ubuntu
             dockerfile: ubuntu/jammy/Dockerfile
 
@@ -58,7 +58,7 @@ jobs:
         uses: docker://hadolint/hadolint:latest
         with:
           entrypoint: /bin/hadolint
-          args: --config /github/workspace/.hadolint.yaml /github/workspace/debian/bullseye/slim/Dockerfile
+          args: --config /github/workspace/.hadolint.yaml /github/workspace/debian/bookworm/slim/Dockerfile
 
       - name: Lint Alpine Dockerfile
         uses: docker://hadolint/hadolint:latest
