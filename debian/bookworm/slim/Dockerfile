@@ -1,5 +1,5 @@
 # Build stage
-FROM --platform=$BUILDPLATFORM debian:bullseye-slim AS build
+FROM --platform=$BUILDPLATFORM debian:bookworm-slim AS build
 
 # Set shell options
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -112,7 +112,7 @@ RUN set -eux; \
 COPY THIRDPART[Y] /target/THIRDPARTY
 
 # Runtime stage
-FROM debian:bullseye-slim AS runtime
+FROM debian:bookworm-slim AS runtime
 
 ARG ARTICHOKE_NIGHTLY_VERSION=latest
 ARG ARTICHOKE_NIGHTLY_REVISION=latest
@@ -130,7 +130,7 @@ LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.ref.name="slim-nightly"
 LABEL org.opencontainers.image.title="Artichoke Ruby nightly"
 LABEL org.opencontainers.image.description="Distribution of artichoke CLI and airb REPL from Artichoke Ruby"
-LABEL org.opencontainers.image.base.name="docker.io/library/debian:bullseye-slim"
+LABEL org.opencontainers.image.base.name="docker.io/library/debian:bookworm-slim"
 
 COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
