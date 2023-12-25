@@ -31,8 +31,8 @@ Currently supported docker platforms are:
   `latest`, `ubuntu-nightly`, `ubuntu-jammy-nightly`, and `ubuntu22.04-nightly`.
   Ubuntu images are multi-arch images with `linux/amd64` and `linux/arm64`
   support.
-- `debian-slim` - Debian 11 (Bullseye) slim image, tagged `slim-nightly` and
-  `slim-bullseye-nightly`. Debian images are multi-arch images with
+- `debian-slim` - Debian 12 (Bookworm) slim image, tagged `slim-nightly` and
+  `slim-bookworm-nightly`. Debian images are multi-arch images with
   `linux/amd64` and `linux/arm64` support.
 - `alpine` - Alpine 3 image, tagged with `alpine-nightly` and `alpine3-nightly`.
   Alpine images only have `linux/amd64` architecture support.
