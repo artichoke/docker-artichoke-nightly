@@ -1,0 +1,63 @@
+---
+name: Toolchain Version Check
+"on":
+  schedule:
+    - cron: "0 0 * * *" # build nightly!
+
+jobs:
+  check-toolchain-version:
+    name: Nightly
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      - name: Install Ruby toolchain
+        uses: ruby/setup-ruby@8575951200e472d5f2d95c625da0c7bec8217c42 # v1.161.0
+        with:
+          ruby-version: ".ruby-version"
+          bundler-cache: true
+
+      - name: Read existing rustc version
+        id: rust_version
+        run: |
+          bundle exec rake toolchain:version
+          echo "version=$(bundle exec rake toolchain:version)" >> "$GITHUB_OUTPUT"
+
+      - name: Check the latest rustc version
+        id: latest_rust_release
+        uses: octokit/request-action@v2.1.9
+        with:
+          route: GET /repos/{owner}/{repo}/releases/latest
+          owner: rust-lang
+          repo: rust
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update the toolchain version and run sync
+        if: ${{ steps.rust_version.outputs.version != fromJson(steps.latest_rust_release.outputs.data).tag_name }}
+        env:
+          NEXT_VERSION: ${{ fromJson(steps.latest_rust_release.outputs.data).tag_name }}
+        run: |
+          # Matches "RUST_VERSION = 'M.M.P'" and replaces with "RUST_VERSION = '$NEXT_VRSION'"
+          sed -iE "s/^\(RUST_VERSION\ =\ '\).*\('\)\$/\1$NEXT_VERSION\2/g" Rakefile
+          bundle exec rake toolchain:sync
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5.0.2
+        if: ${{ steps.rust_version.outputs.version != fromJson(steps.latest_rust_release.outputs.data).tag_name }}
+        with:
+          title: Update the rust toolchain
+          body: |
+            ⚠ This PR is automatically created via a Github Action. Ensure all changs are valid before merging.
+
+            Update the toolchain and sync to the latest available in rust-lang/rust
+
+            [Changelog](https://github.com/rust-lang/rust/blob/master/RELEASES.md)
+          commit-message: Sync the toolchain to the latest Rust upstream
+          base: trunk
+          branch: actions/update-toolchain-version
+          labels: |
+            A-deps
+          assignees: |
+            b-n
