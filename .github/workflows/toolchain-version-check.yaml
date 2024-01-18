@@ -2,7 +2,7 @@
 name: Toolchain Version Check
 "on":
   schedule:
-    - cron: "0 0 * * *" # build nightly!
+    - cron: "0 5 * * 5" # 5am UTC Fridays
 
 jobs:
   check-toolchain-version:
