@@ -6,7 +6,7 @@ name: Toolchain Version Check
 
 jobs:
   check-toolchain-version:
-    name: Nightly
+    name: Check toolchain version
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +26,7 @@ jobs:
 
       - name: Check the latest rustc version
         id: latest_rust_release
-        uses: octokit/request-action@v2.1.9
+        uses: octokit/request-action@89697eb6635e52c6e1e5559f15b5c91ba5100cb0 # v2.1.9
         with:
           route: GET /repos/{owner}/{repo}/releases/latest
           owner: rust-lang
@@ -39,17 +39,17 @@ jobs:
         env:
           NEXT_VERSION: ${{ fromJson(steps.latest_rust_release.outputs.data).tag_name }}
         run: |
-          # Matches "RUST_VERSION = 'M.M.P'" and replaces with "RUST_VERSION = '$NEXT_VRSION'"
+          # Matches "RUST_VERSION = 'M.M.P'" and replaces `M.M.P` with `$NEXT_VERSION`
           sed -iE "s/^\(RUST_VERSION\ =\ '\).*\('\)\$/\1$NEXT_VERSION\2/g" Rakefile
           bundle exec rake toolchain:sync
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5.0.2
+        uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38
         if: ${{ steps.rust_version.outputs.version != fromJson(steps.latest_rust_release.outputs.data).tag_name }}
         with:
           title: Update the rust toolchain
           body: |
-            ⚠ This PR is automatically created via a Github Action. Ensure all changs are valid before merging.
+            ⚠ This PR is automatically created via a Github Action. Ensure all changes are valid before merging.
 
             Update the toolchain and sync to the latest available in rust-lang/rust
 
@@ -60,4 +60,4 @@ jobs:
           labels: |
             A-deps
           assignees: |
-            b-n
+            @artichoke/contributors
