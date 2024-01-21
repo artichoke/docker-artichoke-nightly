@@ -56,13 +56,17 @@ jobs:
         uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
         if: ${{ steps.version_info.outputs.matches != 'true' }}
         with:
-          title: Update the rust toolchain
+          title: Update the rust toolchain from ${{ steps.version_info.outputs.current }} to ${{ steps.version_info.outputs.next }}
           body: |
             ⚠ This PR is automatically created via a Github Action. Ensure all changes are valid before merging.
 
-            Update the toolchain and sync to the latest available in rust-lang/rust
+            Update the toolchain and sync to the latest available in rust-lang/rust.
+
+            Current toolchain version: ${{ steps.version_info.outputs.current }}
+            Latest toolchain version: ${{ steps.version_info.outputs.next }}
 
             [Changelog](https://github.com/rust-lang/rust/blob/master/RELEASES.md)
+            [Commits](https://github.com/rust-lang/rust/compare/${{ steps.version_info.outputs.current}}...${{ steps.version_info.outputs.next }})
           commit-message: Sync the toolchain to the latest Rust upstream
           base: trunk
           branch: actions/update-toolchain-version
