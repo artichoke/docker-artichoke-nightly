@@ -33,10 +33,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update the toolchain version and run sync
-        if: ${{ steps.rust_version.outputs.version != fromJson(steps.latest_rust_release.outputs.data).tag_name }}
+      - name: Extract rust version info
+        id: version_info
         env:
-          NEXT_VERSION: ${{ fromJson(steps.latest_rust_release.outputs.data).tag_name }}
+          CURRENT: ${{ steps.rust_version.outputs.version }}
+          NEXT: ${{ fromJson(steps.latest_rust_release.outputs.data).tag_name }}
+        run: |
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+          echo "next=$NEXT" >> "$GITHUB_OUTPUT"
+          echo "matches=$(test \"$CURRENT\" = \"$NEXT\" && echo 'true' || echo 'false')" >> "$GITHUB_OUTPUT"
+
+      - name: Update the toolchain version and run sync
+        if: ${{ steps.version_info.outputs.matches != 'true' }}
+        env:
+          NEXT_VERSION: ${{ steps.version_info.outputs.next }}
         run: |
           # Matches "RUST_VERSION = 'M.M.P'" and replaces `M.M.P` with `$NEXT_VERSION`
           sed -iE "s/^\(RUST_VERSION\ =\ '\).*\('\)\$/\1$NEXT_VERSION\2/g" Rakefile
@@ -44,7 +54,7 @@ jobs:
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
-        if: ${{ steps.rust_version.outputs.version != fromJson(steps.latest_rust_release.outputs.data).tag_name }}
+        if: ${{ steps.version_info.outputs.matches != 'true' }}
         with:
           title: Update the rust toolchain
           body: |
