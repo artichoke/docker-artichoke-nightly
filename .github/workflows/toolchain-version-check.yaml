@@ -21,7 +21,6 @@ jobs:
       - name: Read existing rustc version
         id: rust_version
         run: |
-          bundle exec rake toolchain:version
           echo "version=$(bundle exec rake toolchain:version)" >> "$GITHUB_OUTPUT"
 
       - name: Check the latest rustc version
