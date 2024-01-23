@@ -50,10 +50,11 @@ jobs:
       - name: Update the toolchain version and run sync
         if: ${{ steps.version_info.outputs.matches != 'true' }}
         env:
-          NEXT_VERSION: ${{ steps.version_info.outputs.next }}
+          CURRENT: ${{ steps.version_info.outputs.current }}
+          NEXT: ${{ steps.version_info.outputs.next }}
         run: |
-          # Matches "RUST_VERSION = 'M.M.P'" and replaces `M.M.P` with `$NEXT_VERSION`
-          sed -iE "s/^\(RUST_VERSION\ =\ '\).*\('\)\$/\1$NEXT_VERSION\2/g" Rakefile
+          # Matches `RUST_VERSION = '$CURRENT'` and replaces with `RUST_VERSION = '$NEXT'`
+          sed -iE "s/^RUST_VERSION = '$CURRENT'$/RUST_VERSION = '$NEXT'/g" Rakefile
           bundle exec rake toolchain:sync
 
       - name: Create Pull Request
