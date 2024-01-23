@@ -60,7 +60,7 @@ jobs:
         uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
         if: ${{ steps.version_info.outputs.matches != 'true' }}
         with:
-          title: Update the rust toolchain from ${{ steps.version_info.outputs.current }} to ${{ steps.version_info.outputs.next }}
+          title: Update Rust toolchain from ${{ steps.version_info.outputs.current }} to ${{ steps.version_info.outputs.next }}
           body: |
             ⚠ This PR is automatically created via a Github Action. Ensure all changes are valid before merging.
 
