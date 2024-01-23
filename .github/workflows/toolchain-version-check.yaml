@@ -41,7 +41,11 @@ jobs:
         run: |
           echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
           echo "next=$NEXT" >> "$GITHUB_OUTPUT"
-          echo "matches=$(test \"$CURRENT\" = \"$NEXT\" && echo 'true' || echo 'false')" >> "$GITHUB_OUTPUT"
+          if [[ "$CURRENT" == "$NEXT" ]]; then
+            echo "matches=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "matches=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Update the toolchain version and run sync
         if: ${{ steps.version_info.outputs.matches != 'true' }}
