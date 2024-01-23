@@ -84,4 +84,9 @@ namespace :toolchain do
       raise 'Failed to update some RUST_VERSION args' if failures.any?
     end
   end
+
+  desc 'Output the current toolchain version'
+  task :version do
+    puts RUST_VERSION
+  end
 end

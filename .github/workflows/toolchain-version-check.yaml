@@ -1,0 +1,82 @@
+---
+name: Toolchain Version Check
+"on":
+  schedule:
+    - cron: "0 5 * * 5" # 5am UTC Fridays. Rust toolchain versions merge Thursday afternoons.
+
+jobs:
+  check-toolchain-version:
+    name: Check toolchain version
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      - name: Install Ruby toolchain
+        uses: ruby/setup-ruby@8575951200e472d5f2d95c625da0c7bec8217c42 # v1.161.0
+        with:
+          ruby-version: ".ruby-version"
+          bundler-cache: true
+
+      - name: Read existing rustc version
+        id: rust_version
+        run: |
+          echo "version=$(bundle exec rake toolchain:version)" >> "$GITHUB_OUTPUT"
+
+      - name: Check the latest rustc version
+        id: latest_rust_release
+        uses: octokit/request-action@89697eb6635e52c6e1e5559f15b5c91ba5100cb0 # v2.1.9
+        with:
+          route: GET /repos/{owner}/{repo}/releases/latest
+          owner: rust-lang
+          repo: rust
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract rust version info
+        id: version_info
+        env:
+          CURRENT: ${{ steps.rust_version.outputs.version }}
+          NEXT: ${{ fromJson(steps.latest_rust_release.outputs.data).tag_name }}
+        run: |
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+          echo "next=$NEXT" >> "$GITHUB_OUTPUT"
+          if [[ "$CURRENT" == "$NEXT" ]]; then
+            echo "matches=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "matches=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update the toolchain version and run sync
+        if: ${{ steps.version_info.outputs.matches != 'true' }}
+        env:
+          CURRENT: ${{ steps.version_info.outputs.current }}
+          NEXT: ${{ steps.version_info.outputs.next }}
+        run: |
+          # Matches `RUST_VERSION = '$CURRENT'` and replaces with `RUST_VERSION = '$NEXT'`
+          sed -iE "s/^RUST_VERSION = '$CURRENT'$/RUST_VERSION = '$NEXT'/g" Rakefile
+          bundle exec rake toolchain:sync
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
+        if: ${{ steps.version_info.outputs.matches != 'true' }}
+        with:
+          title: Update Rust toolchain from ${{ steps.version_info.outputs.current }} to ${{ steps.version_info.outputs.next }}
+          body: |
+            > [!WARNING]
+            > This PR is automatically created via a Github Action. Ensure all changes are valid before merging.
+
+            Update the toolchain and sync to the latest available in rust-lang/rust.
+
+            Current toolchain version: ${{ steps.version_info.outputs.current }}
+            Latest toolchain version: ${{ steps.version_info.outputs.next }}
+
+            [Changelog](https://github.com/rust-lang/rust/blob/master/RELEASES.md)
+            [Commits](https://github.com/rust-lang/rust/compare/${{ steps.version_info.outputs.current}}...${{ steps.version_info.outputs.next }})
+          commit-message: Sync the toolchain to the latest Rust upstream
+          base: trunk
+          branch: actions/update-toolchain-version
+          labels: |
+            A-deps
+          assignees: |
+            @artichoke/contributors
