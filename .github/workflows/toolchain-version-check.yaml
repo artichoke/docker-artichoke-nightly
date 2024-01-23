@@ -2,7 +2,7 @@
 name: Toolchain Version Check
 "on":
   schedule:
-    - cron: "0 5 * * 5" # 5am UTC Fridays
+    - cron: "0 5 * * 5" # 5am UTC Fridays. Rust toolchain versions merge Thursday afternoons.
 
 jobs:
   check-toolchain-version:
