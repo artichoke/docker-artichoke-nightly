@@ -62,7 +62,8 @@ jobs:
         with:
           title: Update Rust toolchain from ${{ steps.version_info.outputs.current }} to ${{ steps.version_info.outputs.next }}
           body: |
-            ⚠ This PR is automatically created via a Github Action. Ensure all changes are valid before merging.
+            > [!WARNING]
+            > This PR is automatically created via a Github Action. Ensure all changes are valid before merging.
 
             Update the toolchain and sync to the latest available in rust-lang/rust.
 
