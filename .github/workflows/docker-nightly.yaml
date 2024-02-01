@@ -99,7 +99,7 @@ jobs:
               print(f"build_timestamp={build_timestamp}", file=f)
 
       - name: Generate THIRDPARTY license listing
-        uses: artichoke/generate_third_party@v1.11.0
+        uses: artichoke/generate_third_party@v1.12.1
         with:
           artichoke_ref: ${{ steps.latest.outputs.commit }}
           target_triple: ${{ matrix.target_triple }}
