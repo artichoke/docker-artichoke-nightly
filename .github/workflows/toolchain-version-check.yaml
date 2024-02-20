@@ -3,6 +3,7 @@ name: Toolchain Version Check
 "on":
   schedule:
     - cron: "0 5 * * 5" # 5am UTC Fridays. Rust toolchain versions merge Thursday afternoons.
+  workflow_dispatch:
 
 jobs:
   check-toolchain-version:
@@ -54,7 +55,7 @@ jobs:
           NEXT: ${{ steps.version_info.outputs.next }}
         run: |
           # Matches `RUST_VERSION = '$CURRENT'` and replaces with `RUST_VERSION = '$NEXT'`
-          sed -iE "s/^RUST_VERSION = '$CURRENT'$/RUST_VERSION = '$NEXT'/g" Rakefile
+          sed -i "s/^RUST_VERSION = '$CURRENT'$/RUST_VERSION = '$NEXT'/g" Rakefile
           bundle exec rake toolchain:sync
 
       - name: Create Pull Request
@@ -74,6 +75,9 @@ jobs:
             [Changelog](https://github.com/rust-lang/rust/blob/master/RELEASES.md)
             [Commits](https://github.com/rust-lang/rust/compare/${{ steps.version_info.outputs.current}}...${{ steps.version_info.outputs.next }})
           commit-message: Sync the toolchain to the latest Rust upstream
+          add-paths: |
+            Rakefile
+            **/Dockerfile
           base: trunk
           branch: actions/update-toolchain-version
           labels: |
