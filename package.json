@@ -1,0 +1,22 @@
+{
+  "name": "@artichokeruby/docker-artichoke-nightly",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Docker images for nightly builds of Artichoke Ruby",
+  "keywords": [
+    "docker",
+    "nightly",
+    "release",
+    "rust"
+  ],
+  "repository": "github:artichoke/docker-artichoke-nightly",
+  "author": "Ryan Lopopolo <rjl@hyperbo.la> (https://hyperbo.la/)",
+  "homepage": "https://www.artichokeruby.org",
+  "bugs": "https://github.com/artichoke/docker-artichoke-nightly/issues",
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  },
+  "scripts": {
+    "fmt": "prettier --write \"**/*\""
+  }
+}
