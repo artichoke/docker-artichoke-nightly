@@ -29,10 +29,10 @@ jobs:
             dockerfile: ubuntu/jammy/Dockerfile
 
     steps:
-      - uses: actions/checkout@v4.1.2
+      - uses: actions/checkout@v4.1.4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@2b51285047da1547ffb1b2203d8be4c0af6b1f20 # v3.2.0
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
 
       - name: Build and push Docker images
         uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5.3.0
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.4
 
       - name: Lint Ubuntu Dockerfile
         uses: docker://hadolint/hadolint:latest
@@ -71,10 +71,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.4
 
       - name: Install Ruby toolchain
-        uses: ruby/setup-ruby@5f19ec79cedfadb78ab837f95b87734d0003c899 # v1.173.0
+        uses: ruby/setup-ruby@1198b074305f9356bd56dd4b311757cc0dab2f1c # v1.175.1
         with:
           ruby-version: ".ruby-version"
           bundler-cache: true
@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.4
 
       - name: Setup Node.js runtime
         uses: actions/setup-node@v4.0.2
