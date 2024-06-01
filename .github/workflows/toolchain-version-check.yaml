@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4.1.4
+      - uses: actions/checkout@v4.1.6
 
       - name: Install Ruby toolchain
-        uses: ruby/setup-ruby@1198b074305f9356bd56dd4b311757cc0dab2f1c # v1.175.1
+        uses: ruby/setup-ruby@0cde4689ba33c09f1b890c1725572ad96751a3fc # v1.178.0
         with:
           ruby-version: ".ruby-version"
           bundler-cache: true
@@ -26,7 +26,7 @@ jobs:
 
       - name: Check the latest rustc version
         id: latest_rust_release
-        uses: octokit/request-action@21d174fc38ff59af9cf4d7e07347d29df6dbaa99 # v2.3.0
+        uses: octokit/request-action@872c5c97b3c85c23516a572f02b31401ef82415d # v2.3.1
         with:
           route: GET /repos/{owner}/{repo}/releases/latest
           owner: rust-lang
