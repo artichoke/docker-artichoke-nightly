@@ -21,7 +21,7 @@ RUN apt-get update && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no
 # Rust setup
 #
 # https://github.com/rust-lang/docker-rust/blob/10f1b7cab43bde8b4d6299aa4d91a895a0e5388d/1.64.0/bullseye/slim/Dockerfile#L3-L37
-ARG RUST_VERSION=1.78.0
+ARG RUST_VERSION=1.79.0
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
