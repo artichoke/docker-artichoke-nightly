@@ -36,7 +36,7 @@ end
 
 Bundler::Audit::Task.new
 
-RUST_VERSION = '1.83.0'
+RUST_VERSION = '1.84.1'
 
 namespace :toolchain do
   desc 'Sync Rust toolchain to all sources'
