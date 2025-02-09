@@ -31,9 +31,7 @@ jobs:
         id: latest_rust_release
         uses: octokit/request-action@dad4362715b7fb2ddedf9772c8670824af564f0d # v2.4.0
         with:
-          route: GET /repos/{owner}/{repo}/releases/latest
-          owner: rust-lang
-          repo: rust
+          route: GET /repos/rust-lang/rust/releases/latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
