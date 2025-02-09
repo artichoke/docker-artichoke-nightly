@@ -8,10 +8,15 @@ require 'rubocop/rake_task'
 task default: %i[format lint]
 
 desc 'Lint sources'
-task lint: %i[lint:rubocop:autocorrect]
+task lint: %i[lint:rubocop:autocorrect lint:yaml]
 
 namespace :lint do
   RuboCop::RakeTask.new(:rubocop)
+
+  desc 'Lint YAML sources with yamllint'
+  task :yaml do
+    sh 'uv run yamllint --strict .'
+  end
 end
 
 desc 'Format sources'

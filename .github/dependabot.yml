@@ -37,3 +37,15 @@ updates:
       - lopopolo
     labels:
       - A-deps
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: monthly
+    groups:
+      pip-deps:
+        patterns:
+          - "*"
+    assignees:
+      - lopopolo
+    labels:
+      - A-deps
