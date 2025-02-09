@@ -27,7 +27,7 @@ jobs:
           - build: debian
             dockerfile: debian/bookworm/slim/Dockerfile
           - build: ubuntu
-            dockerfile: ubuntu/jammy/Dockerfile
+            dockerfile: ubuntu/noble/Dockerfile
 
     steps:
       - name: Checkout repository
@@ -48,26 +48,31 @@ jobs:
   docker:
     name: Lint Dockerfiles
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        build:
+          - alpine
+          - debian
+          - ubuntu
+        include:
+          - build: alpine
+            dockerfile: alpine/Dockerfile
+          - build: debian
+            dockerfile: debian/bookworm/slim/Dockerfile
+          - build: ubuntu
+            dockerfile: ubuntu/noble/Dockerfile
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
 
-      - name: Lint Ubuntu Dockerfile
+      - name: Lint ${{ matrix.build }} Dockerfile
         uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf # v3.1.0
         with:
-          dockerfile: ubuntu/jammy/Dockerfile
-
-      - name: Lint Debian Slim Dockerfile
-        uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf # v3.1.0
-        with:
-          dockerfile: debian/bookworm/slim/Dockerfile
-
-      - name: Lint Alpine Dockerfile
-        uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf # v3.1.0
-        with:
-          dockerfile: alpine/Dockerfile
+          dockerfile: ${{ matrix.dockerfile }}
 
   ruby:
     name: Lint and format Ruby

@@ -1,5 +1,5 @@
 # Build stage
-FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS build
+FROM --platform=$BUILDPLATFORM ubuntu:24.04 AS build
 
 # Set shell options
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -114,7 +114,7 @@ RUN set -eux; \
 COPY THIRDPART[Y] /target/THIRDPARTY
 
 # Runtime stage
-FROM ubuntu:22.04 AS runtime
+FROM ubuntu:24.04 AS runtime
 
 ARG ARTICHOKE_NIGHTLY_VERSION=latest
 ARG ARTICHOKE_NIGHTLY_REVISION=latest
@@ -132,7 +132,7 @@ LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.ref.name="ubuntu-nightly"
 LABEL org.opencontainers.image.title="Artichoke Ruby nightly"
 LABEL org.opencontainers.image.description="Distribution of artichoke CLI and airb REPL from Artichoke Ruby"
-LABEL org.opencontainers.image.base.name="docker.io/library/ubuntu:22.04"
+LABEL org.opencontainers.image.base.name="docker.io/library/ubuntu:24.04"
 
 COPY --from=build /usr/local/cargo/bin/artichoke /opt/artichoke/bin/artichoke
 COPY --from=build /usr/local/cargo/bin/airb /opt/artichoke/bin/airb
