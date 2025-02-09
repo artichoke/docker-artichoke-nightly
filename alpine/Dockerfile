@@ -139,8 +139,8 @@ RUN addgroup --system --gid 1888 artichoke && \
     adduser --system -G artichoke --uid 1888 artichoke
 USER artichoke
 
-ENV ARTICHOKE_BIN /opt/artichoke/bin
-ENV PATH $ARTICHOKE_BIN:$PATH
+ENV ARTICHOKE_BIN=/opt/artichoke/bin
+ENV PATH=$ARTICHOKE_BIN:$PATH
 
 # Set the entry point command for the container to the REPL
 CMD [ "airb" ]
