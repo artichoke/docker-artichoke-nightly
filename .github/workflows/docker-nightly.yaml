@@ -36,10 +36,10 @@ jobs:
             tag_version: slim-bookworm
           - build: ubuntu
             target_triple: x86_64-unknown-linux-gnu
-            dockerfile: ubuntu/jammy/Dockerfile
+            dockerfile: ubuntu/noble/Dockerfile
             docker_target_platforms: linux/amd64,linux/arm64
             tag_bare: ubuntu
-            tag_version: ubuntu-jammy
+            tag_version: ubuntu-noble
 
     steps:
       - name: Checkout repository
@@ -155,7 +155,7 @@ jobs:
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
             artichokeruby/artichoke:latest
-            artichokeruby/artichoke:ubuntu22.04-nightly
+            artichokeruby/artichoke:ubuntu24.04-nightly
           build-args: |
             ARTICHOKE_NIGHTLY_REVISION=${{ steps.latest.outputs.commit }}
             ARTICHOKE_NIGHTLY_VERSION=${{ steps.labels.outputs.artichoke_version }}

@@ -1,5 +1,5 @@
 # Build stage
-FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS build
+FROM --platform=$BUILDPLATFORM ubuntu:24.04 AS build
 
 # Set shell options
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
