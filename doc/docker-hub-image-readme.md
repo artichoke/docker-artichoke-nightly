@@ -36,8 +36,8 @@ $ docker run -it docker.io/artichokeruby/artichoke airb
 
 Currently supported docker platforms are:
 
-- `ubuntu` - canonical mainline Ubuntu 22.04 Jammy Jellyfish image, tagged with
-  `latest`, `ubuntu-nightly`, `ubuntu-jammy-nightly`, and `ubuntu22.04-nightly`.
+- `ubuntu` - canonical mainline Ubuntu 24.04 Noble Numbat image, tagged with
+  `latest`, `ubuntu-nightly`, `ubuntu-noble-nightly`, and `ubuntu24.04-nightly`.
   Ubuntu images are multi-arch images with `linux/amd64` and `linux/arm64`
   support.
 - `debian-slim` - Debian 12 (Bookworm) slim image, tagged `slim-nightly` and
