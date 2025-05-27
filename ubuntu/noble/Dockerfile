@@ -98,7 +98,7 @@ RUN set -eux; \
         --branch trunk \
         --bins \
         --locked \
-        artichoke@0.1.0-pre.0; \
+        artichoke; \
     else \
       cargo install \
         --target "$artichokeArch" \
@@ -106,7 +106,7 @@ RUN set -eux; \
         --rev "$ARTICHOKE_NIGHTLY_REVISION" \
         --bins \
         --locked \
-        artichoke@0.1.0-pre.0; \
+        artichoke; \
     fi; \
     mkdir /target; \
     touch /target/THIRDPARTY;
