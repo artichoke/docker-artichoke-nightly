@@ -90,6 +90,7 @@ RUN set -eux; \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
         --branch trunk \
+        --bins \
         --locked \
         artichoke; \
     else \
@@ -97,6 +98,7 @@ RUN set -eux; \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
         --rev "$ARTICHOKE_NIGHTLY_REVISION" \
+        --bins \
         --locked \
         artichoke; \
     fi; \

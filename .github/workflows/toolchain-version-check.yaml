@@ -9,6 +9,9 @@ jobs:
   check-toolchain-version:
     name: Check toolchain version
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -17,7 +20,7 @@ jobs:
           persist-credentials: false
 
       - name: Install Ruby toolchain
-        uses: ruby/setup-ruby@32110d4e311bd8996b2a82bf2a43b714ccc91777 # v1.221.0
+        uses: ruby/setup-ruby@13e7a03dc3ac6c3798f4570bfead2aed4d96abfb # v1.244.0
         with:
           ruby-version: ".ruby-version"
           bundler-cache: true
@@ -60,7 +63,7 @@ jobs:
           bundle exec rake toolchain:sync
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@dd2324fc52d5d43c699a5636bcf19fceaa70c284 # v7.0.7
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         if: ${{ steps.version_info.outputs.matches != 'true' }}
         with:
           title: Update Rust toolchain from ${{ steps.version_info.outputs.current }} to ${{ steps.version_info.outputs.next }}

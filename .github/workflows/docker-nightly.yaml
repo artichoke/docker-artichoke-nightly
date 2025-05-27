@@ -62,7 +62,7 @@ jobs:
           echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@1edb52594c857e2b5b13128931090f0640537287 # v5.3.0
+        uses: astral-sh/setup-uv@f0ec1fc3b38f5e7cd731bb6ce540c5af426746bb # v6.1.0
         with:
           version: "latest"
           enable-cache: false
@@ -123,14 +123,14 @@ jobs:
           cache-binary: false
 
       - name: Login to DockerHub
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
         if: github.ref == 'refs/heads/trunk'
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker images
-        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
+        uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0 # v6.17.0
         with:
           context: .
           platforms: ${{ matrix.docker_target_platforms }}
@@ -146,7 +146,7 @@ jobs:
             RUST_VERSION=${{ steps.rust_toolchain.outputs.version }}
 
       - name: Build and push Docker images (Ubuntu extra tags)
-        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
+        uses: docker/build-push-action@1dc73863535b631f98b2378be8619f83b136f4a0 # v6.17.0
         if: matrix.build == 'ubuntu'
         with:
           context: .
