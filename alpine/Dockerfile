@@ -90,15 +90,17 @@ RUN set -eux; \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
         --branch trunk \
+        --bins \
         --locked \
-        artichoke; \
+        artichoke@0.1.0-pre.0; \
     else \
       cargo install \
         --target "$artichokeArch" \
         --git https://github.com/artichoke/artichoke \
         --rev "$ARTICHOKE_NIGHTLY_REVISION" \
+        --bins \
         --locked \
-        artichoke; \
+        artichoke@0.1.0-pre.0; \
     fi; \
     mkdir /target; \
     touch /target/THIRDPARTY;
