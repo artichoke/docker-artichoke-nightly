@@ -9,6 +9,9 @@ jobs:
   check-toolchain-version:
     name: Check toolchain version
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout repository
