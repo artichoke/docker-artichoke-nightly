@@ -84,7 +84,7 @@ jobs:
           persist-credentials: false
 
       - name: Install Ruby toolchain
-        uses: ruby/setup-ruby@0481980f17b760ef6bca5e8c55809102a0af1e5a # v1.263.0
+        uses: ruby/setup-ruby@d5126b9b3579e429dd52e51e68624dda2e05be25 # v1.267.0
         with:
           ruby-version: ".ruby-version"
           bundler-cache: true
@@ -102,7 +102,7 @@ jobs:
           persist-credentials: false
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
+        uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7.1.2
         with:
           version: "latest"
 
@@ -110,7 +110,7 @@ jobs:
         run: uv python install
 
       - name: Setup Node.js runtime
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version: "lts/*"
 
