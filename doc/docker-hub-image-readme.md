@@ -1,7 +1,6 @@
 # Artichoke Ruby
 
 [![GitHub Actions](https://github.com/artichoke/artichoke/workflows/CI/badge.svg)](https://github.com/artichoke/artichoke/actions)
-[![Discord](https://img.shields.io/discord/607683947496734760)](https://discord.gg/QCe2tp2)
 [![Twitter](https://img.shields.io/twitter/follow/artichokeruby?label=Follow&style=social)](https://twitter.com/artichokeruby)
 <br>
 [![Crate](https://img.shields.io/crates/v/artichoke.svg)](https://crates.io/crates/artichoke)
@@ -129,13 +128,6 @@ please file one before beginning to work on a PR. [Good first issues are labeled
 [github-issues]: https://github.com/artichoke/artichoke/issues
 [file-an-issue]: https://github.com/artichoke/artichoke/issues/new
 [e-easy]: https://github.com/artichoke/artichoke/labels/E-easy
-
-### Discussion
-
-If you'd like to engage in a discussion outside of GitHub, you can [join
-Artichoke's public Discord server][discord].
-
-[discord]: https://discord.gg/QCe2tp2
 
 ## License
 
